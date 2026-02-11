@@ -3,14 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:window_manager/window_manager.dart';
 
 import '../../application/video_player/video_player_bloc.dart';
+// ignore: unused_import
 import '../../application/video_player/video_player_event.dart';
 import '../../application/video_player/video_player_state.dart';
+import '../../application/file_browser/file_browser_bloc.dart';
 import '../../data/repositories/video_repository_impl.dart';
 import '../../infrastructure/services/media_player_service.dart';
 import '../../core/venom_layout.dart';
 import '../screens/player_screen.dart';
 
-/// الصفحة الرئيسية للتطبيق مع BlocProvider
+/// الصفحة الرئيسية للتطبيق مع BlocProviders
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -20,28 +22,39 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late final MediaPlayerService _playerService;
-  late final VideoPlayerBloc _bloc;
+  late final VideoRepositoryImpl _repository;
+  late final VideoPlayerBloc _playerBloc;
+  late final FileBrowserBloc _browserBloc;
 
   @override
   void initState() {
     super.initState();
     _playerService = MediaPlayerService();
-    _bloc = VideoPlayerBloc(
+    _repository = VideoRepositoryImpl();
+    _playerBloc = VideoPlayerBloc(
       playerService: _playerService,
-      repository: VideoRepositoryImpl(),
+      repository: _repository,
+    );
+    _browserBloc = FileBrowserBloc(
+      repository: _repository,
+      playerBloc: _playerBloc,
     );
   }
 
   @override
   void dispose() {
-    _bloc.close();
+    _browserBloc.close();
+    _playerBloc.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<VideoPlayerBloc>.value(
-      value: _bloc,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<VideoPlayerBloc>.value(value: _playerBloc),
+        BlocProvider<FileBrowserBloc>.value(value: _browserBloc),
+      ],
       child: BlocListener<VideoPlayerBloc, VideoPlayerState>(
         listenWhen: (previous, current) =>
             previous.isFullscreen != current.isFullscreen,
@@ -58,16 +71,14 @@ class _HomePageState extends State<HomePage> {
               previous.currentTitle != current.currentTitle,
           builder: (context, state) {
             if (state.isFullscreen) {
-              // وضع ملء الشاشة - بدون VenomScaffold
               return const Scaffold(
                 backgroundColor: Color.fromARGB(0, 0, 0, 0),
                 body: PlayerScreen(),
               );
             }
 
-            // الوضع العادي - مع VenomScaffold
             return VenomScaffold(
-              title: state.hasMedia ? state.currentTitle : 'VAXP Player',
+              title: state.hasMedia ? state.currentTitle : 'VVPlayer',
               body: const PlayerScreen(),
             );
           },

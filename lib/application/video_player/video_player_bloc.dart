@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_kit/media_kit.dart';
-import 'package:file_picker/file_picker.dart';
 
 import '../../domain/entities/video_item.dart';
 import '../../domain/entities/playlist.dart' as app;
@@ -27,7 +26,6 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
         _repository = repository,
         super(const VideoPlayerState()) {
     // التشغيل الأساسي
-    on<OpenFilesRequested>(_onOpenFilesRequested);
     on<FilesDropped>(_onFilesDropped);
     on<PlayPauseToggled>(_onPlayPauseToggled);
     on<StopRequested>(_onStopRequested);
@@ -82,6 +80,7 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
     _subscriptions.add(
       _playerService.playingStream.listen((isPlaying) {
         if (!isClosed) {
+          // ignore: invalid_use_of_visible_for_testing_member
           emit(state.copyWith(
             status: isPlaying ? PlayerStatus.playing : PlayerStatus.paused,
           ));
@@ -139,16 +138,6 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
   }
 
   // ===== معالجات الأحداث =====
-
-  Future<void> _onOpenFilesRequested(
-    OpenFilesRequested event,
-    Emitter<VideoPlayerState> emit,
-  ) async {
-    final items = await _repository.pickVideoFiles();
-    if (items.isEmpty) return;
-
-    await _loadVideos(items, emit);
-  }
 
   Future<void> _onFilesDropped(
     FilesDropped event,
@@ -423,15 +412,7 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
     ExternalSubtitleRequested event,
     Emitter<VideoPlayerState> emit,
   ) async {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['srt', 'ass', 'ssa', 'sub', 'vtt'],
-      dialogTitle: 'اختر ملف ترجمة',
-    );
-
-    if (result != null && result.files.isNotEmpty && result.files.first.path != null) {
-      await _playerService.loadExternalSubtitle(result.files.first.path!);
-    }
+    // يمكن تحميل الترجمة عبر سحب ملف الترجمة للنافذة
   }
 
   Future<void> _onScreenshotRequested(

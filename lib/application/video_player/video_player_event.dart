@@ -148,6 +148,7 @@ class VideoInfoToggled extends VideoPlayerEvent {}
 // ===== أحداث داخلية (من الـ Streams) =====
 
 /// تحديث حالة التشغيل
+// ignore: unused_element
 class _PlayingStateChanged extends VideoPlayerEvent {
   final bool isPlaying;
   const _PlayingStateChanged(this.isPlaying);

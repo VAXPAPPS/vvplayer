@@ -8,10 +8,13 @@ import 'package:desktop_drop/desktop_drop.dart';
 import '../../application/video_player/video_player_bloc.dart';
 import '../../application/video_player/video_player_event.dart';
 import '../../application/video_player/video_player_state.dart';
+import '../../application/file_browser/file_browser_bloc.dart';
+import '../../application/file_browser/file_browser_event.dart';
+import '../../application/file_browser/file_browser_state.dart';
 import '../widgets/video_controls.dart';
 import '../widgets/playlist_panel.dart';
 import '../widgets/video_info_overlay.dart';
-import '../widgets/welcome_view.dart';
+import '../widgets/file_browser_view.dart';
 
 /// شاشة المشغل الرئيسية
 class PlayerScreen extends StatefulWidget {
@@ -61,11 +64,14 @@ class _PlayerScreenState extends State<PlayerScreen> {
     if (event is! KeyDownEvent) return;
 
     final bloc = context.read<VideoPlayerBloc>();
+    final browserBloc = context.read<FileBrowserBloc>();
     _showControls();
 
     switch (event.logicalKey) {
       case LogicalKeyboardKey.space:
-        bloc.add(PlayPauseToggled());
+        if (bloc.state.hasMedia) {
+          bloc.add(PlayPauseToggled());
+        }
         break;
       case LogicalKeyboardKey.arrowRight:
         bloc.add(SeekForwardRequested());
@@ -105,8 +111,9 @@ class _PlayerScreenState extends State<PlayerScreen> {
       case LogicalKeyboardKey.keyI:
         bloc.add(VideoInfoToggled());
         break;
-      case LogicalKeyboardKey.keyO:
-        bloc.add(OpenFilesRequested());
+      case LogicalKeyboardKey.keyB:
+        // تبديل المتصفح
+        browserBloc.add(ToggleBrowserVisibility());
         break;
       default:
         break;
@@ -116,64 +123,74 @@ class _PlayerScreenState extends State<PlayerScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<VideoPlayerBloc, VideoPlayerState>(
-      builder: (context, state) {
-        final bloc = context.read<VideoPlayerBloc>();
+      builder: (context, playerState) {
+        return BlocBuilder<FileBrowserBloc, FileBrowserState>(
+          builder: (context, browserState) {
+            final bloc = context.read<VideoPlayerBloc>();
+            final showBrowser = !playerState.hasMedia || browserState.isVisible;
 
-        return KeyboardListener(
-          focusNode: _focusNode,
-          autofocus: true,
-          onKeyEvent: _handleKeyEvent,
-          child: DropTarget(
-            onDragEntered: (_) => setState(() => _isDragHovering = true),
-            onDragExited: (_) => setState(() => _isDragHovering = false),
-            onDragDone: (details) {
-              setState(() => _isDragHovering = false);
-              final paths = details.files
-                  .map((f) => f.path)
-                  .toList();
-              if (paths.isNotEmpty) {
-                bloc.add(FilesDropped(paths));
-              }
-            },
-            child: MouseRegion(
-              onHover: (_) => _showControls(),
-              child: GestureDetector(
-                onTap: () {
-                  if (state.hasMedia) {
-                    setState(() => _controlsVisible = !_controlsVisible);
-                    if (_controlsVisible) _resetHideTimer();
-                  }
-                },
-                onDoubleTap: () {
-                  if (state.hasMedia) {
-                    bloc.add(FullscreenToggled());
+            return KeyboardListener(
+              focusNode: _focusNode,
+              autofocus: true,
+              onKeyEvent: _handleKeyEvent,
+              child: DropTarget(
+                onDragEntered: (_) => setState(() => _isDragHovering = true),
+                onDragExited: (_) => setState(() => _isDragHovering = false),
+                onDragDone: (details) {
+                  setState(() => _isDragHovering = false);
+                  final paths = details.files.map((f) => f.path).toList();
+                  if (paths.isNotEmpty) {
+                    bloc.add(FilesDropped(paths));
                   }
                 },
                 child: Stack(
                   children: [
-                    // خلفية سوداء
-                    Container(color: Colors.black),
+                    // خلفية
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            const Color(0xFF0D0D1A),
+                            const Color(0xFF111125),
+                            const Color(0xFF0A0A15),
+                          ],
+                        ),
+                      ),
+                    ),
 
-                    // عرض الفيديو أو شاشة الترحيب
-                    if (state.hasMedia)
-                      Center(
-                        child: Video(
-                          controller:
-                              bloc.playerService.videoController,
-                          controls: NoVideoControls,
-                          fill: Colors.black,
+                    // المحتوى الرئيسي
+                    if (playerState.hasMedia && !showBrowser)
+                      // عرض الفيديو
+                      MouseRegion(
+                        onHover: (_) => _showControls(),
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(
+                                () => _controlsVisible = !_controlsVisible);
+                            if (_controlsVisible) _resetHideTimer();
+                          },
+                          onDoubleTap: () =>
+                              bloc.add(FullscreenToggled()),
+                          child: Center(
+                            child: Video(
+                              controller:
+                                  bloc.playerService.videoController,
+                              controls: NoVideoControls,
+                              fill: Colors.black,
+                            ),
+                          ),
                         ),
                       )
                     else
-                      WelcomeView(
-                        onOpenFile: () => bloc.add(OpenFilesRequested()),
-                        isDragHovering: _isDragHovering,
-                      ),
+                      // متصفح الملفات
+                      const FileBrowserView(),
 
                     // تراكب Drag & Drop
-                    if (_isDragHovering && state.hasMedia)
+                    if (_isDragHovering)
                       Container(
-                        color: Colors.black.withOpacity(0.5),
+                        color: Colors.black.withOpacity(0.6),
                         child: Center(
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
@@ -186,7 +203,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                               ),
                               const SizedBox(height: 12),
                               Text(
-                                'أفلت الملفات لإضافتها',
+                                'أفلت الملفات لتشغيلها',
                                 style: TextStyle(
                                   fontSize: 16,
                                   color: Colors.white.withOpacity(0.7),
@@ -197,17 +214,19 @@ class _PlayerScreenState extends State<PlayerScreen> {
                         ),
                       ),
 
-                    // عنوان الفيديو (أعلى)
-                    if (state.hasMedia && _controlsVisible)
+                    // عنوان الفيديو (أعلى) - فقط في وضع التشغيل
+                    if (playerState.hasMedia &&
+                        !showBrowser &&
+                        _controlsVisible)
                       Positioned(
                         top: 44,
                         left: 16,
                         right: 16,
                         child: AnimatedOpacity(
                           duration: const Duration(milliseconds: 300),
-                          opacity: _controlsVisible ? 1.0 : 0.0,
+                          opacity: 1.0,
                           child: Text(
-                            state.currentTitle,
+                            playerState.currentTitle,
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
@@ -226,21 +245,22 @@ class _PlayerScreenState extends State<PlayerScreen> {
                       ),
 
                     // معلومات الفيديو
-                    const VideoInfoOverlay(),
+                    if (playerState.hasMedia && !showBrowser)
+                      const VideoInfoOverlay(),
 
                     // عناصر التحكم (أسفل)
-                    if (state.hasMedia)
+                    if (playerState.hasMedia && !showBrowser)
                       Positioned(
                         bottom: 0,
                         left: 0,
-                        right: state.isPlaylistPanelVisible ? 280 : 0,
-                        child: VideoControls(
-                          visible: _controlsVisible,
-                        ),
+                        right: playerState.isPlaylistPanelVisible ? 280 : 0,
+                        child: VideoControls(visible: _controlsVisible),
                       ),
 
                     // مؤشر التخزين المؤقت
-                    if (state.isBuffering && state.hasMedia)
+                    if (playerState.isBuffering &&
+                        playerState.hasMedia &&
+                        !showBrowser)
                       const Center(
                         child: CircularProgressIndicator(
                           color: Color(0xFF7AB5FF),
@@ -248,20 +268,87 @@ class _PlayerScreenState extends State<PlayerScreen> {
                       ),
 
                     // لوحة قائمة التشغيل (يمين)
-                    if (state.hasMedia)
+                    if (playerState.hasMedia && !showBrowser)
                       const Positioned(
                         top: 40,
                         right: 0,
                         bottom: 0,
                         child: PlaylistPanel(),
                       ),
+
+                    // زر العودة للمتصفح (في وضع التشغيل)
+                    if (playerState.hasMedia &&
+                        !showBrowser &&
+                        _controlsVisible)
+                      Positioned(
+                        top: 44,
+                        right: 16,
+                        child: _BrowserToggleButton(
+                          onTap: () => context
+                              .read<FileBrowserBloc>()
+                              .add(ToggleBrowserVisibility()),
+                        ),
+                      ),
                   ],
                 ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
+    );
+  }
+}
+
+/// زر العودة لمتصفح الملفات
+class _BrowserToggleButton extends StatefulWidget {
+  final VoidCallback onTap;
+  const _BrowserToggleButton({required this.onTap});
+
+  @override
+  State<_BrowserToggleButton> createState() => _BrowserToggleButtonState();
+}
+
+class _BrowserToggleButtonState extends State<_BrowserToggleButton> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: _isHovered
+                ? Colors.white.withOpacity(0.15)
+                : Colors.black.withOpacity(0.3),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.folder_rounded,
+                size: 16,
+                color: Colors.white.withOpacity(0.7),
+              ),
+              const SizedBox(width: 6),
+              Text(
+                'الملفات',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.white.withOpacity(0.7),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

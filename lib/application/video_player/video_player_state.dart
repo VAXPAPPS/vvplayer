@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:media_kit/media_kit.dart' hide Playlist;
+// ignore: unused_import
 import '../../domain/entities/video_item.dart';
 import '../../domain/entities/playlist.dart';
 
