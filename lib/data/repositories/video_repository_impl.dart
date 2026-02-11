@@ -24,18 +24,18 @@ class VideoRepositoryImpl implements VideoRepository {
 
     // المجلد الرئيسي
     quickPaths.add(FileItem(
-      name: 'الرئيسية',
+      name: 'main',
       path: home,
       isDirectory: true,
     ));
 
     // مجلدات شائعة
     final commonDirs = {
-      'الفيديوهات': '$home/Videos',
-      'التنزيلات': '$home/Downloads',
-      'المستندات': '$home/Documents',
-      'الموسيقى': '$home/Music',
-      'سطح المكتب': '$home/Desktop',
+      'Videos': '$home/Videos',
+      'Downloads': '$home/Downloads',
+      'Documents': '$home/Documents',
+      'Music': '$home/Music',
+      'Desktop': '$home/Desktop',
     };
 
     for (final entry in commonDirs.entries) {
@@ -51,7 +51,7 @@ class VideoRepositoryImpl implements VideoRepository {
 
     // الجذر
     quickPaths.add(const FileItem(
-      name: 'النظام /',
+      name: 'System /',
       path: '/',
       isDirectory: true,
     ));

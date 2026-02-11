@@ -71,19 +71,19 @@ class _QuickNavSidebar extends StatelessWidget {
 
   IconData _getIcon(String name) {
     switch (name) {
-      case 'الرئيسية':
+      case 'Main':
         return Icons.home_rounded;
-      case 'الفيديوهات':
+      case 'Videos':
         return Icons.video_library_rounded;
-      case 'التنزيلات':
+      case 'Downloads':
         return Icons.download_rounded;
-      case 'المستندات':
+      case 'Documents':
         return Icons.description_rounded;
-      case 'الموسيقى':
+      case 'Music':
         return Icons.music_note_rounded;
-      case 'سطح المكتب':
+      case 'Desktop':
         return Icons.desktop_windows_rounded;
-      case 'النظام /':
+      case 'System /':
         return Icons.storage_rounded;
       default:
         return Icons.folder_rounded;
@@ -120,7 +120,7 @@ class _QuickNavSidebar extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      'الأماكن',
+                      'Places',
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
@@ -431,7 +431,7 @@ class _PlayAllButtonState extends State<_PlayAllButton> {
               ),
               const SizedBox(width: 4),
               Text(
-                'تشغيل الكل',
+                'Play all',
                 style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w600,
@@ -615,15 +615,15 @@ class _EmptyDirectory extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            'لا توجد ملفات فيديو أو مجلدات',
+            'No video files or folders',
             style: TextStyle(
               fontSize: 14,
               color: Colors.white.withOpacity(0.3),
             ),
           ),
           const SizedBox(height: 4),
-          Text(
-            'يتم عرض ملفات الفيديو فقط',
+              Text(
+                'Only video files are displayed',
             style: TextStyle(
               fontSize: 12,
               color: Colors.white.withOpacity(0.2),

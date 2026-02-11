@@ -145,19 +145,9 @@ class _PlayerScreenState extends State<PlayerScreen> {
                 },
                 child: Stack(
                   children: [
-                    // خلفية
+                    // خلفية شفافة (تظهر خلفية سطح المكتب)
                     Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            const Color(0xFF0D0D1A),
-                            const Color(0xFF111125),
-                            const Color(0xFF0A0A15),
-                          ],
-                        ),
-                      ),
+                      color: const Color.fromARGB(0, 0, 0, 0),
                     ),
 
                     // المحتوى الرئيسي
