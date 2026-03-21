@@ -41,10 +41,10 @@ class VideoInfoOverlay extends StatelessWidget {
                 constraints: const BoxConstraints(maxWidth: 320),
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.5),
+                  color: Colors.black.withValues(alpha: 0.5),
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(
-                    color: Colors.white.withOpacity(0.1),
+                    color: Colors.white.withValues(alpha: 0.1),
                   ),
                 ),
                 child: Column(
@@ -79,7 +79,7 @@ class VideoInfoOverlay extends StatelessWidget {
                           child: Icon(
                             Icons.close,
                             size: 16,
-                            color: Colors.white.withOpacity(0.5),
+                            color: Colors.white.withValues(alpha: 0.5),
                           ),
                         ),
                       ],
@@ -87,7 +87,7 @@ class VideoInfoOverlay extends StatelessWidget {
 
                     const SizedBox(height: 12),
                     Divider(
-                      color: Colors.white.withOpacity(0.08),
+                      color: Colors.white.withValues(alpha: 0.08),
                       height: 1,
                     ),
                     const SizedBox(height: 12),
@@ -161,7 +161,7 @@ class _InfoRow extends StatelessWidget {
             label,
             style: TextStyle(
               fontSize: isSmall ? 10 : 12,
-              color: Colors.white.withOpacity(0.4),
+              color: Colors.white.withValues(alpha: 0.4),
             ),
           ),
         ),
@@ -170,7 +170,7 @@ class _InfoRow extends StatelessWidget {
             value,
             style: TextStyle(
               fontSize: isSmall ? 10 : 12,
-              color: Colors.white.withOpacity(0.8),
+              color: Colors.white.withValues(alpha: 0.8),
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,

@@ -100,7 +100,7 @@ class _SeekBarState extends State<SeekBar> {
                     height: _isHovering || _isDragging ? 6 : 3,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(3),
-                      color: Colors.white.withOpacity(0.15),
+                      color: Colors.white.withValues(alpha: 0.15),
                     ),
                   ),
 
@@ -112,7 +112,7 @@ class _SeekBarState extends State<SeekBar> {
                         height: _isHovering ? 6 : 3,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(3),
-                          color: Colors.white.withOpacity(0.1),
+                          color: Colors.white.withValues(alpha: 0.1),
                         ),
                       ),
                     ),
@@ -132,7 +132,7 @@ class _SeekBarState extends State<SeekBar> {
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: const Color(0xFF7AB5FF).withOpacity(0.4),
+                            color: const Color(0xFF7AB5FF).withValues(alpha: 0.4),
                             blurRadius: 6,
                           ),
                         ],
@@ -154,7 +154,7 @@ class _SeekBarState extends State<SeekBar> {
                           color: Colors.white,
                           boxShadow: [
                             BoxShadow(
-                              color: const Color(0xFF7AB5FF).withOpacity(0.6),
+                              color: const Color(0xFF7AB5FF).withValues(alpha: 0.6),
                               blurRadius: 8,
                               spreadRadius: 1,
                             ),
@@ -187,7 +187,7 @@ class _SeekBarState extends State<SeekBar> {
                 ),
                 style: TextStyle(
                   fontSize: 11,
-                  color: Colors.white.withOpacity(0.6),
+                  color: Colors.white.withValues(alpha: 0.6),
                   fontFeatures: const [FontFeature.tabularFigures()],
                 ),
               ),
@@ -195,7 +195,7 @@ class _SeekBarState extends State<SeekBar> {
                 _formatDuration(widget.duration),
                 style: TextStyle(
                   fontSize: 11,
-                  color: Colors.white.withOpacity(0.4),
+                  color: Colors.white.withValues(alpha: 0.4),
                   fontFeatures: const [FontFeature.tabularFigures()],
                 ),
               ),

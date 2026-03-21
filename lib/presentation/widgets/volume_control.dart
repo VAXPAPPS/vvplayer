@@ -67,9 +67,9 @@ class _VolumeControlState extends State<VolumeControl> {
                     overlayRadius: 12,
                   ),
                   activeTrackColor: const Color(0xFF7AB5FF),
-                  inactiveTrackColor: Colors.white.withOpacity(0.15),
+                  inactiveTrackColor: Colors.white.withValues(alpha: 0.15),
                   thumbColor: Colors.white,
-                  overlayColor: const Color(0xFF7AB5FF).withOpacity(0.2),
+                  overlayColor: const Color(0xFF7AB5FF).withValues(alpha: 0.2),
                 ),
                 child: Slider(
                   value: widget.isMuted ? 0 : widget.volume,
@@ -121,12 +121,12 @@ class _ControlIconState extends State<_ControlIcon> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             color:
-                _isHovered ? Colors.white.withOpacity(0.1) : Colors.transparent,
+                _isHovered ? Colors.white.withValues(alpha: 0.1) : Colors.transparent,
           ),
           child: Icon(
             widget.icon,
             size: widget.size,
-            color: Colors.white.withOpacity(_isHovered ? 1.0 : 0.7),
+            color: Colors.white.withValues(alpha: _isHovered ? 1.0 : 0.7),
           ),
         ),
       ),

@@ -27,10 +27,10 @@ class PlaylistPanel extends StatelessWidget {
               filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.6),
+                  color: Colors.black.withValues(alpha: 0.6),
                   border: Border(
                     left: BorderSide(
-                      color: Colors.white.withOpacity(0.08),
+                      color: Colors.white.withValues(alpha: 0.08),
                     ),
                   ),
                 ),
@@ -44,7 +44,7 @@ class PlaylistPanel extends StatelessWidget {
                           Icon(
                             Icons.queue_music_rounded,
                             size: 20,
-                            color: Colors.white.withOpacity(0.7),
+                            color: Colors.white.withValues(alpha: 0.7),
                           ),
                           const SizedBox(width: 8),
                           Text(
@@ -52,7 +52,7 @@ class PlaylistPanel extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
-                              color: Colors.white.withOpacity(0.9),
+                              color: Colors.white.withValues(alpha: 0.9),
                             ),
                           ),
                           const Spacer(),
@@ -60,14 +60,14 @@ class PlaylistPanel extends StatelessWidget {
                             '${state.playlist.items.length} ملف',
                             style: TextStyle(
                               fontSize: 11,
-                              color: Colors.white.withOpacity(0.4),
+                              color: Colors.white.withValues(alpha: 0.4),
                             ),
                           ),
                           IconButton(
                             icon: Icon(
                               Icons.close,
                               size: 18,
-                              color: Colors.white.withOpacity(0.5),
+                              color: Colors.white.withValues(alpha: 0.5),
                             ),
                             onPressed: () => context
                                 .read<VideoPlayerBloc>()
@@ -78,7 +78,7 @@ class PlaylistPanel extends StatelessWidget {
                     ),
 
                     Divider(
-                      color: Colors.white.withOpacity(0.08),
+                      color: Colors.white.withValues(alpha: 0.08),
                       height: 1,
                     ),
 
@@ -92,13 +92,13 @@ class PlaylistPanel extends StatelessWidget {
                                   Icon(
                                     Icons.playlist_add,
                                     size: 40,
-                                    color: Colors.white.withOpacity(0.2),
+                                    color: Colors.white.withValues(alpha: 0.2),
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
                                     'لا توجد ملفات',
                                     style: TextStyle(
-                                      color: Colors.white.withOpacity(0.3),
+                                      color: Colors.white.withValues(alpha: 0.3),
                                       fontSize: 13,
                                     ),
                                   ),
@@ -145,7 +145,7 @@ class PlaylistPanel extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                               side: BorderSide(
-                                color: const Color(0xFF7AB5FF).withOpacity(0.3),
+                                color: const Color(0xFF7AB5FF).withValues(alpha: 0.3),
                               ),
                             ),
                           ),
@@ -200,13 +200,13 @@ class _PlaylistItemState extends State<_PlaylistItem> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: widget.isActive
-                ? const Color(0xFF7AB5FF).withOpacity(0.15)
+                ? const Color(0xFF7AB5FF).withValues(alpha: 0.15)
                 : _isHovered
-                    ? Colors.white.withOpacity(0.05)
+                    ? Colors.white.withValues(alpha: 0.05)
                     : Colors.transparent,
             border: widget.isActive
                 ? Border.all(
-                    color: const Color(0xFF7AB5FF).withOpacity(0.3),
+                    color: const Color(0xFF7AB5FF).withValues(alpha: 0.3),
                   )
                 : null,
           ),
@@ -225,7 +225,7 @@ class _PlaylistItemState extends State<_PlaylistItem> {
                         '${widget.index + 1}',
                         style: TextStyle(
                           fontSize: 11,
-                          color: Colors.white.withOpacity(0.3),
+                          color: Colors.white.withValues(alpha: 0.3),
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -243,7 +243,7 @@ class _PlaylistItemState extends State<_PlaylistItem> {
                     fontSize: 13,
                     color: widget.isActive
                         ? const Color(0xFF7AB5FF)
-                        : Colors.white.withOpacity(0.7),
+                        : Colors.white.withValues(alpha: 0.7),
                     fontWeight: widget.isActive
                         ? FontWeight.w600
                         : FontWeight.normal,
@@ -258,7 +258,7 @@ class _PlaylistItemState extends State<_PlaylistItem> {
                   child: Icon(
                     Icons.close,
                     size: 14,
-                    color: Colors.white.withOpacity(0.4),
+                    color: Colors.white.withValues(alpha: 0.4),
                   ),
                 ),
             ],

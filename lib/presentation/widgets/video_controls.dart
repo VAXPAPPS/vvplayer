@@ -76,13 +76,13 @@ class _VideoControlsState extends State<VideoControls>
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        Colors.black.withOpacity(0.3),
-                        Colors.black.withOpacity(0.7),
+                        Colors.black.withValues(alpha: 0.3),
+                        Colors.black.withValues(alpha: 0.7),
                       ],
                     ),
                     border: Border(
                       top: BorderSide(
-                        color: Colors.white.withOpacity(0.08),
+                        color: Colors.white.withValues(alpha: 0.08),
                       ),
                     ),
                   ),
@@ -274,7 +274,7 @@ class _ControlButtonState extends State<_ControlButton> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             color: _isHovered && widget.enabled
-                ? Colors.white.withOpacity(0.1)
+                ? Colors.white.withValues(alpha: 0.1)
                 : Colors.transparent,
           ),
           child: Icon(
@@ -282,7 +282,7 @@ class _ControlButtonState extends State<_ControlButton> {
             size: widget.size,
             color: widget.isActive
                 ? const Color(0xFF7AB5FF)
-                : Colors.white.withOpacity(
+                : Colors.white.withValues(alpha: 
                     opacity * (_isHovered ? 1.0 : 0.7)),
           ),
         ),
@@ -327,14 +327,14 @@ class _PlayPauseButtonState extends State<_PlayPauseButton> {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                const Color(0xFF7AB5FF).withOpacity(_isHovered ? 0.9 : 0.7),
-                const Color(0xFF5B9BF5).withOpacity(_isHovered ? 0.9 : 0.7),
+                const Color(0xFF7AB5FF).withValues(alpha: _isHovered ? 0.9 : 0.7),
+                const Color(0xFF5B9BF5).withValues(alpha: _isHovered ? 0.9 : 0.7),
               ],
             ),
             boxShadow: _isHovered
                 ? [
                     BoxShadow(
-                      color: const Color(0xFF7AB5FF).withOpacity(0.4),
+                      color: const Color(0xFF7AB5FF).withValues(alpha: 0.4),
                       blurRadius: 16,
                       spreadRadius: 2,
                     ),
@@ -383,10 +383,10 @@ class _SpeedButtonState extends State<_SpeedButton> {
     return PopupMenuButton<double>(
       tooltip: 'سرعة التشغيل',
       offset: const Offset(0, -200),
-      color: Colors.black.withOpacity(0.85),
+      color: Colors.black.withValues(alpha: 0.85),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: Colors.white.withOpacity(0.1)),
+        side: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
       ),
       itemBuilder: (context) => _speeds
           .map((s) => PopupMenuItem<double>(
@@ -423,7 +423,7 @@ class _SpeedButtonState extends State<_SpeedButton> {
             fontWeight: FontWeight.w600,
             color: widget.speed != 1.0
                 ? const Color(0xFF7AB5FF)
-                : Colors.white.withOpacity(0.7),
+                : Colors.white.withValues(alpha: 0.7),
           ),
         ),
       ),

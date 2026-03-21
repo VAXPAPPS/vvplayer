@@ -101,7 +101,7 @@ class _QuickNavSidebar extends StatelessWidget {
             color: const Color.fromARGB(0, 0, 0, 0),
             border: Border(
               right: BorderSide(
-                color: Colors.white.withOpacity(0.06),
+                color: Colors.white.withValues(alpha: 0.06),
               ),
             ),
           ),
@@ -116,7 +116,7 @@ class _QuickNavSidebar extends StatelessWidget {
                     Icon(
                       Icons.bookmark_rounded,
                       size: 16,
-                      color: Colors.white.withOpacity(0.4),
+                      color: Colors.white.withValues(alpha: 0.4),
                     ),
                     const SizedBox(width: 8),
                     Text(
@@ -124,7 +124,7 @@ class _QuickNavSidebar extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
-                        color: Colors.white.withOpacity(0.4),
+                        color: Colors.white.withValues(alpha: 0.4),
                         letterSpacing: 1,
                       ),
                     ),
@@ -187,9 +187,9 @@ class _QuickNavItemState extends State<_QuickNavItem> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: widget.isActive
-                ? const Color(0xFF7AB5FF).withOpacity(0.15)
+                ? const Color(0xFF7AB5FF).withValues(alpha: 0.15)
                 : _isHovered
-                    ? Colors.white.withOpacity(0.05)
+                    ? Colors.white.withValues(alpha: 0.05)
                     : Colors.transparent,
           ),
           child: Row(
@@ -199,7 +199,7 @@ class _QuickNavItemState extends State<_QuickNavItem> {
                 size: 18,
                 color: widget.isActive
                     ? const Color(0xFF7AB5FF)
-                    : Colors.white.withOpacity(0.5),
+                    : Colors.white.withValues(alpha: 0.5),
               ),
               const SizedBox(width: 10),
               Expanded(
@@ -209,7 +209,7 @@ class _QuickNavItemState extends State<_QuickNavItem> {
                     fontSize: 13,
                     color: widget.isActive
                         ? const Color(0xFF7AB5FF)
-                        : Colors.white.withOpacity(_isHovered ? 0.8 : 0.6),
+                        : Colors.white.withValues(alpha: _isHovered ? 0.8 : 0.6),
                     fontWeight: widget.isActive
                         ? FontWeight.w600
                         : FontWeight.normal,
@@ -251,7 +251,7 @@ class _NavigationBar extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: Colors.white.withOpacity(0.06),
+            color: Colors.white.withValues(alpha: 0.06),
           ),
         ),
       ),
@@ -292,9 +292,9 @@ class _NavigationBar extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                color: Colors.white.withOpacity(0.05),
+                color: Colors.white.withValues(alpha: 0.05),
                 border: Border.all(
-                  color: Colors.white.withOpacity(0.08),
+                  color: Colors.white.withValues(alpha: 0.08),
                 ),
               ),
               child: Row(
@@ -302,7 +302,7 @@ class _NavigationBar extends StatelessWidget {
                   Icon(
                     Icons.folder_open_rounded,
                     size: 14,
-                    color: const Color(0xFF7AB5FF).withOpacity(0.7),
+                    color: const Color(0xFF7AB5FF).withValues(alpha: 0.7),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
@@ -310,7 +310,7 @@ class _NavigationBar extends StatelessWidget {
                       currentPath,
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.white.withOpacity(0.6),
+                        color: Colors.white.withValues(alpha: 0.6),
                         fontFamily: 'monospace',
                       ),
                       overflow: TextOverflow.ellipsis,
@@ -328,7 +328,7 @@ class _NavigationBar extends StatelessWidget {
             '$dirCount مجلد • $fileCount فيديو',
             style: TextStyle(
               fontSize: 11,
-              color: Colors.white.withOpacity(0.35),
+              color: Colors.white.withValues(alpha: 0.35),
             ),
           ),
 
@@ -373,13 +373,13 @@ class _NavButtonState extends State<_NavButton> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             color: _isHovered && enabled
-                ? Colors.white.withOpacity(0.1)
+                ? Colors.white.withValues(alpha: 0.1)
                 : Colors.transparent,
           ),
           child: Icon(
             widget.icon,
             size: 18,
-            color: Colors.white.withOpacity(enabled ? (_isHovered ? 0.9 : 0.5) : 0.2),
+            color: Colors.white.withValues(alpha: enabled ? (_isHovered ? 0.9 : 0.5) : 0.2),
           ),
         ),
       ),
@@ -413,12 +413,12 @@ class _PlayAllButtonState extends State<_PlayAllButton> {
             borderRadius: BorderRadius.circular(8),
             gradient: LinearGradient(
               colors: [
-                const Color(0xFF7AB5FF).withOpacity(_isHovered ? 0.4 : 0.2),
-                const Color(0xFF5B9BF5).withOpacity(_isHovered ? 0.4 : 0.2),
+                const Color(0xFF7AB5FF).withValues(alpha: _isHovered ? 0.4 : 0.2),
+                const Color(0xFF5B9BF5).withValues(alpha: _isHovered ? 0.4 : 0.2),
               ],
             ),
             border: Border.all(
-              color: const Color(0xFF7AB5FF).withOpacity(0.3),
+              color: const Color(0xFF7AB5FF).withValues(alpha: 0.3),
             ),
           ),
           child: Row(
@@ -539,12 +539,12 @@ class _FileGridItemState extends State<_FileGridItem> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14),
             color: _isHovered
-                ? Colors.white.withOpacity(0.08)
-                : Colors.white.withOpacity(0.03),
+                ? Colors.white.withValues(alpha: 0.08)
+                : Colors.white.withValues(alpha: 0.03),
             border: Border.all(
               color: _isHovered
-                  ? Colors.white.withOpacity(0.12)
-                  : Colors.white.withOpacity(0.04),
+                  ? Colors.white.withValues(alpha: 0.12)
+                  : Colors.white.withValues(alpha: 0.04),
             ),
           ),
           child: Column(
@@ -556,12 +556,12 @@ class _FileGridItemState extends State<_FileGridItem> {
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(14),
-                  color: _getIconColor().withOpacity(_isHovered ? 0.15 : 0.08),
+                  color: _getIconColor().withValues(alpha: _isHovered ? 0.15 : 0.08),
                 ),
                 child: Icon(
                   _getFileIcon(),
                   size: 32,
-                  color: _getIconColor().withOpacity(_isHovered ? 0.9 : 0.7),
+                  color: _getIconColor().withValues(alpha: _isHovered ? 0.9 : 0.7),
                 ),
               ),
 
@@ -572,7 +572,7 @@ class _FileGridItemState extends State<_FileGridItem> {
                 widget.item.name,
                 style: TextStyle(
                   fontSize: 12,
-                  color: Colors.white.withOpacity(_isHovered ? 0.9 : 0.7),
+                  color: Colors.white.withValues(alpha: _isHovered ? 0.9 : 0.7),
                   fontWeight: FontWeight.w500,
                 ),
                 maxLines: 2,
@@ -587,7 +587,7 @@ class _FileGridItemState extends State<_FileGridItem> {
                   widget.item.formattedSize,
                   style: TextStyle(
                     fontSize: 10,
-                    color: Colors.white.withOpacity(0.3),
+                    color: Colors.white.withValues(alpha: 0.3),
                   ),
                 ),
               ],
@@ -611,14 +611,14 @@ class _EmptyDirectory extends StatelessWidget {
           Icon(
             Icons.folder_off_rounded,
             size: 48,
-            color: Colors.white.withOpacity(0.15),
+            color: Colors.white.withValues(alpha: 0.15),
           ),
           const SizedBox(height: 12),
           Text(
             'No video files or folders',
             style: TextStyle(
               fontSize: 14,
-              color: Colors.white.withOpacity(0.3),
+              color: Colors.white.withValues(alpha: 0.3),
             ),
           ),
           const SizedBox(height: 4),
@@ -626,7 +626,7 @@ class _EmptyDirectory extends StatelessWidget {
                 'Only video files are displayed',
             style: TextStyle(
               fontSize: 12,
-              color: Colors.white.withOpacity(0.2),
+              color: Colors.white.withValues(alpha: 0.2),
             ),
           ),
         ],

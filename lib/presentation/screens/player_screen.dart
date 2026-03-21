@@ -180,7 +180,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                     // تراكب Drag & Drop
                     if (_isDragHovering)
                       Container(
-                        color: Colors.black.withOpacity(0.6),
+                        color: Colors.black.withValues(alpha: 0.6),
                         child: Center(
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
@@ -189,14 +189,14 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                 Icons.file_download,
                                 size: 48,
                                 color: const Color(0xFF7AB5FF)
-                                    .withOpacity(0.8),
+                                    .withValues(alpha: 0.8),
                               ),
                               const SizedBox(height: 12),
                               Text(
                                 'أفلت الملفات لتشغيلها',
                                 style: TextStyle(
                                   fontSize: 16,
-                                  color: Colors.white.withOpacity(0.7),
+                                  color: Colors.white.withValues(alpha: 0.7),
                                 ),
                               ),
                             ],
@@ -220,10 +220,10 @@ class _PlayerScreenState extends State<PlayerScreen> {
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
-                              color: Colors.white.withOpacity(0.8),
+                              color: Colors.white.withValues(alpha: 0.8),
                               shadows: [
                                 Shadow(
-                                  color: Colors.black.withOpacity(0.5),
+                                  color: Colors.black.withValues(alpha: 0.5),
                                   blurRadius: 8,
                                 ),
                               ],
@@ -316,8 +316,8 @@ class _BrowserToggleButtonState extends State<_BrowserToggleButton> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             color: _isHovered
-                ? Colors.white.withOpacity(0.15)
-                : Colors.black.withOpacity(0.3),
+                ? Colors.white.withValues(alpha: 0.15)
+                : Colors.black.withValues(alpha: 0.3),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -325,14 +325,14 @@ class _BrowserToggleButtonState extends State<_BrowserToggleButton> {
               Icon(
                 Icons.folder_rounded,
                 size: 16,
-                color: Colors.white.withOpacity(0.7),
+                color: Colors.white.withValues(alpha: 0.7),
               ),
               const SizedBox(width: 6),
               Text(
                 'الملفات',
                 style: TextStyle(
                   fontSize: 12,
-                  color: Colors.white.withOpacity(0.7),
+                  color: Colors.white.withValues(alpha: 0.7),
                 ),
               ),
             ],
