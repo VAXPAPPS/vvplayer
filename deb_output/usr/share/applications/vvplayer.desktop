@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=vvplayer
+Comment=Flutter Application - vvplayer
+Exec=/usr/bin/vvplayer 
+Icon=/usr/share/icons/hicolor/256x256/apps/vvplayer.png
+Terminal=false
+Categories=AudioVideo;Video;Player;
+Keywords=video;player;media;movie;stream;
+MimeType=video/mp4;video/x-matroska;video/x-msvideo;video/webm;video/ogg;video/mpeg;

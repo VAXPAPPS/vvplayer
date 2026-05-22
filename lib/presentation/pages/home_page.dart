@@ -7,6 +7,7 @@ import '../../application/video_player/video_player_bloc.dart';
 import '../../application/video_player/video_player_event.dart';
 import '../../application/video_player/video_player_state.dart';
 import '../../application/file_browser/file_browser_bloc.dart';
+import '../../application/file_browser/file_browser_event.dart';
 import '../../data/repositories/video_repository_impl.dart';
 import '../../infrastructure/services/media_player_service.dart';
 import '../../core/venom_layout.dart';
@@ -14,7 +15,11 @@ import '../screens/player_screen.dart';
 
 /// الصفحة الرئيسية للتطبيق مع BlocProviders
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  // 1. يجب تعريف المتغير هنا كحقل (Field) لكي تحتفظ به الصفحة
+  final String? initialVideoPath;
+
+  // 2. استخدام this.initialVideoPath لربط القيمة الممررة بالحقل
+  const HomePage({super.key, this.initialVideoPath});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -39,6 +44,14 @@ class _HomePageState extends State<HomePage> {
       repository: _repository,
       playerBloc: _playerBloc,
     );
+
+    // 3. الحقن المباشر للمسار
+    // بمجرد تهيئة الـ Blocs، نتحقق مما إذا كان مدير الملفات قد أرسل مساراً
+    if (widget.initialVideoPath != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _browserBloc.add(FileSelected(widget.initialVideoPath!));
+      });
+    }
   }
 
   @override

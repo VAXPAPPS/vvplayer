@@ -5,8 +5,9 @@ import 'package:media_kit/media_kit.dart';
 import 'core/theme/vaxp_theme.dart';
 import 'package:venom_config/venom_config.dart';
 import 'presentation/pages/home_page.dart';
+import 'dart:io'; // تمت الإضافة: للتحقق من وجود مسار الفيديو في نظام الملفات
 
-Future<void> main() async {
+Future<void> main(List<String> args) async { // تمت الإضافة: استقبال المدخلات من النظام
   // Initialize Flutter bindings first to ensure the binary messenger is ready
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -35,11 +36,25 @@ Future<void> main() async {
     await windowManager.focus();
   });
 
-  runApp(const VaxpApp());
+  // تمت الإضافة: معالجة المدخلات (استخراج مسار الفيديو إذا تم تمريره من مدير الملفات)
+  String? injectedVideoPath;
+  if (args.isNotEmpty) {
+    injectedVideoPath = args.first;
+    
+    // التحقق من أن المسار صالح وموجود بالفعل في النظام لتجنب الأخطاء
+    if (!File(injectedVideoPath).existsSync()) {
+      injectedVideoPath = null;
+    }
+  }
+
+  // تمرير المسار المستخرج إلى التطبيق
+  runApp(VaxpApp(initialVideoPath: injectedVideoPath));
 }
 
 class VaxpApp extends StatelessWidget {
-  const VaxpApp({super.key});
+  final String? initialVideoPath; // تمت الإضافة: متغير لاستقبال المسار
+
+  const VaxpApp({super.key, this.initialVideoPath});
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +62,8 @@ class VaxpApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'VAXP Video Player',
       theme: VaxpTheme.dark,
-      home: const HomePage(),
+      // تمرير المسار إلى الصفحة الرئيسية (أو يمكنك وضع شرط هنا لفتح صفحة المشغل مباشرة)
+      home: HomePage(initialVideoPath: initialVideoPath), 
     );
   }
 }

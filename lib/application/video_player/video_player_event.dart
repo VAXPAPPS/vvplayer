@@ -10,7 +10,14 @@ abstract class VideoPlayerEvent extends Equatable {
 }
 
 // ===== التشغيل الأساسي =====
+/// تشغيل ملف فيديو محدد (محقون من النظام عبر مدير الملفات)
+class PlayInjectedFileRequested extends VideoPlayerEvent {
+  final String path;
+  const PlayInjectedFileRequested(this.path);
 
+  @override
+  List<Object?> get props => [path];
+}
 /// فتح ملف/ملفات فيديو عبر مربع حوار
 class OpenFilesRequested extends VideoPlayerEvent {}
 

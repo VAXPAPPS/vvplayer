@@ -71,6 +71,10 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
     on<PlaybackCompleted>(_onPlaybackCompleted);
     on<TracksUpdated>(_onTracksUpdated);
     on<ErrorOccurred>(_onErrorOccurred);
+    
+    on<PlayInjectedFileRequested>((event, emit) async {
+      await playerService.open(event.path);
+    });
 
     // الاستماع للـ Streams
     _initStreams();
