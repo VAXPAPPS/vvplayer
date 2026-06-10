@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'package:equatable/equatable.dart';
 
 /// أحداث متصفح الملفات
@@ -37,3 +38,13 @@ class PlayAllInDirectory extends FileBrowserEvent {}
 
 /// تبديل عرض المتصفح
 class ToggleBrowserVisibility extends FileBrowserEvent {}
+
+/// حدث تحديث الصورة المصغرة لملف
+class ThumbnailLoaded extends FileBrowserEvent {
+  final String path;
+  final Uint8List bytes;
+  const ThumbnailLoaded(this.path, this.bytes);
+
+  @override
+  List<Object?> get props => [path, bytes];
+}

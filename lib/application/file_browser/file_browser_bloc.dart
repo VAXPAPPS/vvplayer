@@ -1,7 +1,10 @@
+import 'dart:typed_data';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/entities/video_item.dart';
+import '../../domain/entities/file_item.dart';
 import '../../domain/repositories/video_repository.dart';
+import '../../data/thumbnail_service.dart';
 import '../video_player/video_player_bloc.dart';
 import '../video_player/video_player_event.dart';
 import 'file_browser_event.dart';
@@ -10,6 +13,7 @@ import 'file_browser_state.dart';
 class FileBrowserBloc extends Bloc<FileBrowserEvent, FileBrowserState> {
   final VideoRepository _repository;
   final VideoPlayerBloc _playerBloc;
+  final ThumbnailService _thumbnailService = ThumbnailService();
 
   FileBrowserBloc({
     required VideoRepository repository,
@@ -23,6 +27,7 @@ class FileBrowserBloc extends Bloc<FileBrowserEvent, FileBrowserState> {
     on<FileSelected>(_onFileSelected);
     on<PlayAllInDirectory>(_onPlayAllInDirectory);
     on<ToggleBrowserVisibility>(_onToggleBrowserVisibility);
+    on<ThumbnailLoaded>(_onThumbnailLoaded);
 
     // تحميل المجلد الرئيسي والمجلدات السريعة عند البداية
     _init();
@@ -62,6 +67,8 @@ class FileBrowserBloc extends Bloc<FileBrowserEvent, FileBrowserState> {
         isLoading: false,
         history: newHistory,
       ));
+
+      _loadThumbnailsForItems(event.path, items);
     } catch (e) {
       emit(state.copyWith(
         isLoading: false,
@@ -93,6 +100,8 @@ class FileBrowserBloc extends Bloc<FileBrowserEvent, FileBrowserState> {
       items: items,
       isLoading: false,
     ));
+
+    _loadThumbnailsForItems(previousPath, items);
   }
 
   Future<void> _onGoHome(
@@ -134,5 +143,29 @@ class FileBrowserBloc extends Bloc<FileBrowserEvent, FileBrowserState> {
     Emitter<FileBrowserState> emit,
   ) {
     emit(state.copyWith(isVisible: !state.isVisible));
+  }
+
+  void _onThumbnailLoaded(
+    ThumbnailLoaded event,
+    Emitter<FileBrowserState> emit,
+  ) {
+    final updatedItems = state.items.map((item) {
+      if (item.path == event.path) {
+        return item.copyWith(thumbnailBytes: event.bytes);
+      }
+      return item;
+    }).toList();
+    emit(state.copyWith(items: updatedItems));
+  }
+
+  void _loadThumbnailsForItems(String dirPath, List<FileItem> items) {
+    final videoItems = items.where((i) => !i.isDirectory).toList();
+    for (final item in videoItems) {
+      _thumbnailService.getThumbnail(item.path).then((bytes) {
+        if (bytes != null && state.currentPath == dirPath) {
+          add(ThumbnailLoaded(item.path, bytes));
+        }
+      });
+    }
   }
 }

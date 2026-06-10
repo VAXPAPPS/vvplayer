@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'package:equatable/equatable.dart';
 
 /// كيان يمثل عنصر في متصفح الملفات (مجلد أو ملف فيديو)
@@ -17,12 +18,16 @@ class FileItem extends Equatable implements Comparable<FileItem> {
   /// تاريخ آخر تعديل
   final DateTime? modifiedDate;
 
+  /// بكسلات الصورة المصغرة (فقط لملفات الفيديو)
+  final Uint8List? thumbnailBytes;
+
   const FileItem({
     required this.name,
     required this.path,
     required this.isDirectory,
     this.size = 0,
     this.modifiedDate,
+    this.thumbnailBytes,
   });
 
   /// الحجم بصيغة مقروءة
@@ -43,6 +48,24 @@ class FileItem extends Equatable implements Comparable<FileItem> {
     return dot != -1 ? name.substring(dot + 1).toLowerCase() : '';
   }
 
+  FileItem copyWith({
+    String? name,
+    String? path,
+    bool? isDirectory,
+    int? size,
+    DateTime? modifiedDate,
+    Uint8List? thumbnailBytes,
+  }) {
+    return FileItem(
+      name: name ?? this.name,
+      path: path ?? this.path,
+      isDirectory: isDirectory ?? this.isDirectory,
+      size: size ?? this.size,
+      modifiedDate: modifiedDate ?? this.modifiedDate,
+      thumbnailBytes: thumbnailBytes ?? this.thumbnailBytes,
+    );
+  }
+
   /// ترتيب: المجلدات أولاً ثم الملفات أبجدياً
   @override
   int compareTo(FileItem other) {
@@ -52,5 +75,6 @@ class FileItem extends Equatable implements Comparable<FileItem> {
   }
 
   @override
-  List<Object?> get props => [name, path, isDirectory, size, modifiedDate];
+  List<Object?> get props => [name, path, isDirectory, size, modifiedDate, thumbnailBytes];
 }
+

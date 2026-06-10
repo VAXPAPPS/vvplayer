@@ -550,20 +550,31 @@ class _FileGridItemState extends State<_FileGridItem> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // أيقونة
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                padding: const EdgeInsets.all(14),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(14),
-                  color: _getIconColor().withValues(alpha: _isHovered ? 0.15 : 0.08),
-                ),
-                child: Icon(
-                  _getFileIcon(),
-                  size: 32,
-                  color: _getIconColor().withValues(alpha: _isHovered ? 0.9 : 0.7),
-                ),
-              ),
+              // أيقونة أو صورة مصغرة
+              widget.item.thumbnailBytes != null
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(14),
+                      child: Image.memory(
+                        widget.item.thumbnailBytes!,
+                        width: 60,
+                        height: 60,
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  : AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      padding: const EdgeInsets.all(14),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        color: _getIconColor().withValues(alpha: _isHovered ? 0.15 : 0.08),
+                      ),
+                      child: Icon(
+                        _getFileIcon(),
+                        size: 32,
+                        color: _getIconColor().withValues(alpha: _isHovered ? 0.9 : 0.7),
+                      ),
+                    ),
+
 
               const SizedBox(height: 10),
 
