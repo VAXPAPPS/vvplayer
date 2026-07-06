@@ -7,7 +7,7 @@ import '../../application/file_browser/file_browser_event.dart';
 import '../../application/file_browser/file_browser_state.dart';
 import '../../domain/entities/file_item.dart';
 
-/// متصفح الملفات المدمج مع تصميم زجاجي
+/// Built-in file browser with glass design
 class FileBrowserView extends StatelessWidget {
   const FileBrowserView({super.key});
 
@@ -17,17 +17,17 @@ class FileBrowserView extends StatelessWidget {
       builder: (context, state) {
         return Row(
           children: [
-            // الشريط الجانبي السريع
+            // Quick sidebar
             _QuickNavSidebar(
               quickPaths: state.quickNavPaths,
               currentPath: state.currentPath,
             ),
 
-            // المحتوى الرئيسي
+            // Main content
             Expanded(
               child: Column(
                 children: [
-                  // شريط التنقل العلوي
+                  // Top navigation bar
                   _NavigationBar(
                     currentPath: state.currentPath,
                     dirName: state.currentDirName,
@@ -36,7 +36,7 @@ class FileBrowserView extends StatelessWidget {
                     dirCount: state.directoryCount,
                   ),
 
-                  // المحتوى
+                  // Content
                   Expanded(
                     child: state.isLoading
                         ? const Center(
@@ -58,7 +58,7 @@ class FileBrowserView extends StatelessWidget {
   }
 }
 
-// ===== الشريط الجانبي السريع =====
+// ===== Quick sidebar =====
 
 class _QuickNavSidebar extends StatelessWidget {
   final List<FileItem> quickPaths;
@@ -108,7 +108,7 @@ class _QuickNavSidebar extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // عنوان
+              // Title
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
                 child: Row(
@@ -132,7 +132,7 @@ class _QuickNavSidebar extends StatelessWidget {
                 ),
               ),
 
-              // القائمة
+              // Menu
               ...quickPaths.map((item) {
                 final isActive = currentPath == item.path;
                 return _QuickNavItem(
@@ -225,7 +225,7 @@ class _QuickNavItemState extends State<_QuickNavItem> {
   }
 }
 
-// ===== شريط التنقل العلوي =====
+// ===== Top Navigation Bar =====
 
 class _NavigationBar extends StatelessWidget {
   final String currentPath;
@@ -257,7 +257,7 @@ class _NavigationBar extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // أزرار التنقل
+          // Navigation buttons
           _NavButton(
             icon: Icons.arrow_back_rounded,
             onTap: canGoBack ? () => bloc.add(GoBack()) : null,
@@ -268,7 +268,7 @@ class _NavigationBar extends StatelessWidget {
             onTap: () => bloc.add(GoHome()),
           ),
           const SizedBox(width: 4),
-          // الذهاب للأعلى
+          // Go up
           _NavButton(
             icon: Icons.arrow_upward_rounded,
             onTap: () {
@@ -286,7 +286,7 @@ class _NavigationBar extends StatelessWidget {
 
           const SizedBox(width: 12),
 
-          // المسار الحالي
+          // Current path
           Expanded(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
@@ -323,16 +323,16 @@ class _NavigationBar extends StatelessWidget {
 
           const SizedBox(width: 12),
 
-          // عداد الملفات
+          // File counter
           Text(
-            '$dirCount مجلد • $fileCount فيديو',
+            '$dirCount folder • $fileCount video',
             style: TextStyle(
               fontSize: 11,
               color: Colors.white.withValues(alpha: 0.35),
             ),
           ),
 
-          // زر تشغيل الكل
+          // Play all button
           if (fileCount > 0) ...[
             const SizedBox(width: 8),
             _PlayAllButton(
@@ -446,7 +446,7 @@ class _PlayAllButtonState extends State<_PlayAllButton> {
   }
 }
 
-// ===== شبكة الملفات =====
+// ===== Files Grid =====
 
 class _FileGrid extends StatelessWidget {
   final List<FileItem> items;
@@ -499,9 +499,9 @@ class _FileGridItemState extends State<_FileGridItem> {
 
   Color _getIconColor() {
     if (widget.item.isDirectory) {
-      return const Color(0xFFFFCA28); // أصفر للمجلدات
+      return const Color(0xFFFFCA28); // Yellow for folders
     }
-    return const Color(0xFF7AB5FF); // أزرق للفيديوهات
+    return const Color(0xFF7AB5FF); // Blue for videos
   }
 
   @override
@@ -550,7 +550,7 @@ class _FileGridItemState extends State<_FileGridItem> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // أيقونة أو صورة مصغرة
+              // Icon or thumbnail
               widget.item.thumbnailBytes != null
                   ? ClipRRect(
                       borderRadius: BorderRadius.circular(14),
@@ -578,7 +578,7 @@ class _FileGridItemState extends State<_FileGridItem> {
 
               const SizedBox(height: 10),
 
-              // الاسم
+              // Name
               Text(
                 widget.item.name,
                 style: TextStyle(
@@ -591,7 +591,7 @@ class _FileGridItemState extends State<_FileGridItem> {
                 textAlign: TextAlign.center,
               ),
 
-              // الحجم (للفيديوهات فقط)
+              // Size (for videos only)
               if (!widget.item.isDirectory && widget.item.formattedSize.isNotEmpty) ...[
                 const SizedBox(height: 4),
                 Text(
@@ -610,7 +610,7 @@ class _FileGridItemState extends State<_FileGridItem> {
   }
 }
 
-// ===== مجلد فارغ =====
+// ===== Empty folder =====
 
 class _EmptyDirectory extends StatelessWidget {
   @override

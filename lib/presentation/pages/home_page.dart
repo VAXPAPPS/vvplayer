@@ -13,12 +13,12 @@ import '../../infrastructure/services/media_player_service.dart';
 import '../../core/venom_layout.dart';
 import '../screens/player_screen.dart';
 
-/// الصفحة الرئيسية للتطبيق مع BlocProviders
+/// Main app page with BlocProviders
 class HomePage extends StatefulWidget {
-  // 1. يجب تعريف المتغير هنا كحقل (Field) لكي تحتفظ به الصفحة
+  // 1. Variable must be defined here as a Field for the page to retain it
   final String? initialVideoPath;
 
-  // 2. استخدام this.initialVideoPath لربط القيمة الممررة بالحقل
+  // 2. Using this.initialVideoPath to link passed value to the field
   const HomePage({super.key, this.initialVideoPath});
 
   @override
@@ -45,8 +45,8 @@ class _HomePageState extends State<HomePage> {
       playerBloc: _playerBloc,
     );
 
-    // 3. الحقن المباشر للمسار
-    // بمجرد تهيئة الـ Blocs، نتحقق مما إذا كان مدير الملفات قد أرسل مساراً
+    // 3. Direct path injection
+    // Once Blocs are initialized, we check if file manager sent a path
     if (widget.initialVideoPath != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _browserBloc.add(FileSelected(widget.initialVideoPath!));

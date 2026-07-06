@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 import 'package:equatable/equatable.dart';
 
-/// أحداث متصفح الملفات
+/// File browser events
 abstract class FileBrowserEvent extends Equatable {
   const FileBrowserEvent();
 
@@ -9,7 +9,7 @@ abstract class FileBrowserEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-/// تحميل محتويات مجلد
+/// Load folder contents
 class NavigateToDirectory extends FileBrowserEvent {
   final String path;
   const NavigateToDirectory(this.path);
@@ -18,13 +18,13 @@ class NavigateToDirectory extends FileBrowserEvent {
   List<Object?> get props => [path];
 }
 
-/// رجوع للمجلد السابق
+/// Return to previous folder
 class GoBack extends FileBrowserEvent {}
 
-/// رجوع للمجلد الرئيسي
+/// Return to main folder
 class GoHome extends FileBrowserEvent {}
 
-/// اختيار ملف فيديو للتشغيل
+/// Select video file to play
 class FileSelected extends FileBrowserEvent {
   final String path;
   const FileSelected(this.path);
@@ -33,13 +33,13 @@ class FileSelected extends FileBrowserEvent {
   List<Object?> get props => [path];
 }
 
-/// تشغيل جميع الفيديوهات في المجلد الحالي
+/// Play all videos in current folder
 class PlayAllInDirectory extends FileBrowserEvent {}
 
-/// تبديل عرض المتصفح
+/// Toggle browser view
 class ToggleBrowserVisibility extends FileBrowserEvent {}
 
-/// حدث تحديث الصورة المصغرة لملف
+/// Thumbnail update event for a file
 class ThumbnailLoaded extends FileBrowserEvent {
   final String path;
   final Uint8List bytes;

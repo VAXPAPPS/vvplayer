@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// شريط التقدم المخصص مع عرض الوقت
+/// Custom progress bar with time display
 class SeekBar extends StatefulWidget {
   final Duration position;
   final Duration duration;
@@ -43,7 +43,7 @@ class _SeekBarState extends State<SeekBar> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // شريط التقدم
+        // Progress bar
         MouseRegion(
           cursor: SystemMouseCursors.click,
           onEnter: (_) => setState(() => _isHovering = true),
@@ -95,7 +95,7 @@ class _SeekBarState extends State<SeekBar> {
               child: Stack(
                 alignment: Alignment.centerLeft,
                 children: [
-                  // الخلفية
+                  // Background
                   Container(
                     height: _isHovering || _isDragging ? 6 : 3,
                     decoration: BoxDecoration(
@@ -104,7 +104,7 @@ class _SeekBarState extends State<SeekBar> {
                     ),
                   ),
 
-                  // علامة الـ Hover
+                  // Hover mark
                   if (_isHovering && !_isDragging)
                     FractionallySizedBox(
                       widthFactor: _hoverPosition,
@@ -117,7 +117,7 @@ class _SeekBarState extends State<SeekBar> {
                       ),
                     ),
 
-                  // شريط التقدم
+                  // Progress bar
                   FractionallySizedBox(
                     widthFactor: displayProgress,
                     child: Container(
@@ -140,7 +140,7 @@ class _SeekBarState extends State<SeekBar> {
                     ),
                   ),
 
-                  // نقطة المؤشر
+                  // Cursor point
                   if (_isHovering || _isDragging)
                     Positioned(
                       left: (displayProgress *
@@ -170,7 +170,7 @@ class _SeekBarState extends State<SeekBar> {
 
         const SizedBox(height: 4),
 
-        // عرض الوقت
+        // Display time
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 2),
           child: Row(

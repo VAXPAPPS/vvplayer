@@ -1,24 +1,24 @@
 import 'dart:typed_data';
 import 'package:equatable/equatable.dart';
 
-/// كيان يمثل عنصر في متصفح الملفات (مجلد أو ملف فيديو)
+/// Entity representing an item in file browser (folder or video file)
 class FileItem extends Equatable implements Comparable<FileItem> {
-  /// اسم الملف أو المجلد
+  /// File or folder name
   final String name;
 
-  /// المسار الكامل
+  /// Full path
   final String path;
 
-  /// هل هو مجلد
+  /// Is it a folder
   final bool isDirectory;
 
-  /// حجم الملف بالبايت (فقط للملفات)
+  /// File size in bytes (only for files)
   final int size;
 
-  /// تاريخ آخر تعديل
+  /// Last modified date
   final DateTime? modifiedDate;
 
-  /// بكسلات الصورة المصغرة (فقط لملفات الفيديو)
+  /// Thumbnail pixels (only for video files)
   final Uint8List? thumbnailBytes;
 
   const FileItem({
@@ -30,7 +30,7 @@ class FileItem extends Equatable implements Comparable<FileItem> {
     this.thumbnailBytes,
   });
 
-  /// الحجم بصيغة مقروءة
+  /// Size in readable format
   String get formattedSize {
     if (isDirectory) return '';
     if (size < 1024) return '$size B';
@@ -41,7 +41,7 @@ class FileItem extends Equatable implements Comparable<FileItem> {
     return '${(size / (1024 * 1024 * 1024)).toStringAsFixed(2)} GB';
   }
 
-  /// امتداد الملف
+  /// File extension
   String get extension {
     if (isDirectory) return '';
     final dot = name.lastIndexOf('.');
@@ -66,7 +66,7 @@ class FileItem extends Equatable implements Comparable<FileItem> {
     );
   }
 
-  /// ترتيب: المجلدات أولاً ثم الملفات أبجدياً
+  /// Order: folders first then files alphabetically
   @override
   int compareTo(FileItem other) {
     if (isDirectory && !other.isDirectory) return -1;

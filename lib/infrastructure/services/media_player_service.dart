@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 
-/// غلاف حول media_kit يوفر واجهة نظيفة للتطبيق
+/// Wrapper around media_kit providing clean interface for app
 class MediaPlayerService {
   late final Player _player;
   late final VideoController _videoController;
@@ -19,21 +19,21 @@ class MediaPlayerService {
     _videoController = VideoController(_player);
   }
 
-  /// الوصول إلى VideoController لعرض الفيديو
+  /// Access to VideoController to display video
   VideoController get videoController => _videoController;
 
-  /// الوصول إلى Player
+  /// Access to Player
   Player get player => _player;
 
-  // ===== التشغيل الأساسي =====
+  // ===== Basic Playback =====
 
-  /// فتح ملف فيديو
+  /// Open video file
   Future<void> open(String path) async {
     if (_isDisposed) return;
     await _player.open(Media(path));
   }
 
-  /// فتح قائمة تشغيل
+  /// Open playlist
   Future<void> openPlaylist(List<String> paths, {int index = 0}) async {
     if (_isDisposed) return;
     final playlist = Playlist(
@@ -45,39 +45,39 @@ class MediaPlayerService {
     }
   }
 
-  /// تشغيل/إيقاف مؤقت
+  /// Play/Pause
   Future<void> playOrPause() async {
     if (_isDisposed) return;
     await _player.playOrPause();
   }
 
-  /// تشغيل
+  /// Play
   Future<void> play() async {
     if (_isDisposed) return;
     await _player.play();
   }
 
-  /// إيقاف مؤقت
+  /// Pause
   Future<void> pause() async {
     if (_isDisposed) return;
     await _player.pause();
   }
 
-  /// إيقاف
+  /// Stop
   Future<void> stop() async {
     if (_isDisposed) return;
     await _player.stop();
   }
 
-  // ===== التنقل =====
+  // ===== Navigation =====
 
-  /// الانتقال لموقع معين
+  /// Go to specific location
   Future<void> seek(Duration position) async {
     if (_isDisposed) return;
     await _player.seek(position);
   }
 
-  /// تقديم بمقدار ثوانٍ
+  /// Forward by seconds
   Future<void> seekForward(int seconds) async {
     if (_isDisposed) return;
     final current = _player.state.position;
@@ -86,7 +86,7 @@ class MediaPlayerService {
     await _player.seek(target > duration ? duration : target);
   }
 
-  /// ترجيع بمقدار ثوانِ
+  /// Rewind by seconds
   Future<void> seekBackward(int seconds) async {
     if (_isDisposed) return;
     final current = _player.state.position;
@@ -94,71 +94,71 @@ class MediaPlayerService {
     await _player.seek(target < Duration.zero ? Duration.zero : target);
   }
 
-  // ===== قائمة التشغيل =====
+  // ===== Playlist =====
 
-  /// الانتقال للعنصر التالي
+  /// Move to next item
   Future<void> next() async {
     if (_isDisposed) return;
     await _player.next();
   }
 
-  /// الانتقال للعنصر السابق
+  /// Move to previous item
   Future<void> previous() async {
     if (_isDisposed) return;
     await _player.previous();
   }
 
-  /// الانتقال لمؤشر محدد
+  /// Go to specific index
   Future<void> jump(int index) async {
     if (_isDisposed) return;
     await _player.jump(index);
   }
 
-  // ===== الصوت =====
+  // ===== Volume =====
 
-  /// ضبط مستوى الصوت (0.0 - 100.0)
+  /// Set volume level (0.0 - 100.0)
   Future<void> setVolume(double volume) async {
     if (_isDisposed) return;
     await _player.setVolume(volume.clamp(0.0, 100.0));
   }
 
-  // ===== السرعة =====
+  // ===== Speed =====
 
-  /// ضبط سرعة التشغيل
+  /// Set playback speed
   Future<void> setRate(double rate) async {
     if (_isDisposed) return;
     await _player.setRate(rate.clamp(0.25, 4.0));
   }
 
-  // ===== التكرار =====
+  // ===== Repeat =====
 
-  /// ضبط وضع التكرار
+  /// Set repeat mode
   Future<void> setPlaylistMode(PlaylistMode mode) async {
     if (_isDisposed) return;
     await _player.setPlaylistMode(mode);
   }
 
-  // ===== المسارات =====
+  // ===== Tracks =====
 
-  /// الحصول على مسارات الصوت
+  /// Get audio tracks
   List<AudioTrack> get audioTracks => _player.state.tracks.audio;
 
-  /// الحصول على مسارات الترجمة
+  /// Get subtitle tracks
   List<SubtitleTrack> get subtitleTracks => _player.state.tracks.subtitle;
 
-  /// اختيار مسار صوت
+  /// Select audio track
   Future<void> setAudioTrack(AudioTrack track) async {
     if (_isDisposed) return;
     await _player.setAudioTrack(track);
   }
 
-  /// اختيار مسار ترجمة
+  /// Select subtitle track
   Future<void> setSubtitleTrack(SubtitleTrack track) async {
     if (_isDisposed) return;
     await _player.setSubtitleTrack(track);
   }
 
-  /// تحميل ملف ترجمة خارجي
+  /// Load external subtitle file
   Future<void> loadExternalSubtitle(String path) async {
     if (_isDisposed) return;
     await _player.setSubtitleTrack(
@@ -166,9 +166,9 @@ class MediaPlayerService {
     );
   }
 
-  // ===== لقطة شاشة =====
+  // ===== Screenshot =====
 
-  /// التقاط screenshot وحفظها
+  /// Capture screenshot and save it
   Future<String?> takeScreenshot(String savePath) async {
     if (_isDisposed) return null;
     try {
@@ -186,34 +186,34 @@ class MediaPlayerService {
 
   // ===== Streams =====
 
-  /// Stream لحالة التشغيل
+  /// Playback state Stream
   Stream<bool> get playingStream => _player.stream.playing;
 
-  /// Stream للموقع الحالي
+  /// Current location Stream
   Stream<Duration> get positionStream => _player.stream.position;
 
-  /// Stream لمدة الفيديو
+  /// Video duration Stream
   Stream<Duration> get durationStream => _player.stream.duration;
 
-  /// Stream لمستوى الصوت
+  /// Volume Stream
   Stream<double> get volumeStream => _player.stream.volume;
 
-  /// Stream للسرعة
+  /// Speed Stream
   Stream<double> get rateStream => _player.stream.rate;
 
-  /// Stream لحالة التخزين المؤقت
+  /// Buffering state Stream
   Stream<bool> get bufferingStream => _player.stream.buffering;
 
-  /// Stream لاكتمال التشغيل
+  /// Playback complete Stream
   Stream<bool> get completedStream => _player.stream.completed;
 
-  /// Stream للمسارات المتاحة
+  /// Available tracks Stream
   Stream<Tracks> get tracksStream => _player.stream.tracks;
 
-  /// Stream للخطأ
+  /// Error Stream
   Stream<String> get errorStream => _player.stream.error;
 
-  // ===== الحالة الحالية =====
+  // ===== Current State =====
 
   bool get isPlaying => _player.state.playing;
   Duration get position => _player.state.position;
@@ -223,9 +223,9 @@ class MediaPlayerService {
   bool get isBuffering => _player.state.buffering;
   bool get isCompleted => _player.state.completed;
 
-  // ===== التنظيف =====
+  // ===== Cleanup =====
 
-  /// تحرير الموارد
+  /// Free resources
   Future<void> dispose() async {
     if (_isDisposed) return;
     _isDisposed = true;

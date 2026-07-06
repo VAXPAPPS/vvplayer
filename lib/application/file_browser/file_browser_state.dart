@@ -1,30 +1,30 @@
 import 'package:equatable/equatable.dart';
 import '../../domain/entities/file_item.dart';
 
-/// حالة متصفح الملفات
+/// File browser state
 class FileBrowserState extends Equatable {
-  /// المسار الحالي
+  /// Current path
   final String currentPath;
 
-  /// اسم المجلد الحالي
+  /// Current folder name
   final String currentDirName;
 
-  /// العناصر في المجلد الحالي
+  /// Items in current folder
   final List<FileItem> items;
 
-  /// جاري التحميل
+  /// Loading
   final bool isLoading;
 
-  /// هل المتصفح مرئي
+  /// Is browser visible
   final bool isVisible;
 
-  /// تاريخ التنقل (للرجوع)
+  /// Navigation history (for going back)
   final List<String> history;
 
-  /// المجلدات السريعة
+  /// Quick folders
   final List<FileItem> quickNavPaths;
 
-  /// رسالة خطأ
+  /// Error message
   final String? errorMessage;
 
   const FileBrowserState({
@@ -38,16 +38,16 @@ class FileBrowserState extends Equatable {
     this.errorMessage,
   });
 
-  /// عدد المجلدات
+  /// Number of folders
   int get directoryCount => items.where((i) => i.isDirectory).length;
 
-  /// عدد الملفات
+  /// Number of files
   int get fileCount => items.where((i) => !i.isDirectory).length;
 
-  /// هل يمكن الرجوع
+  /// Can navigate back
   bool get canGoBack => history.isNotEmpty;
 
-  /// قائمة ملفات الفيديو فقط
+  /// Video files list only
   List<FileItem> get videoFiles => items.where((i) => !i.isDirectory).toList();
 
   FileBrowserState copyWith({

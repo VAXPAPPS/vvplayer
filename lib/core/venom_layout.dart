@@ -1,12 +1,12 @@
-import 'dart:ui'; // مهم للـ ImageFilter
+import 'dart:ui'; // Important for ImageFilter
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'package:venom_config/venom_config.dart';
 
-// 1. هذا هو الـ Layout الرئيسي الذي ستستخدمه في تطبيقك
+// 1. This is the main Layout you will use in your app
 class VenomScaffold extends StatefulWidget {
-  final Widget body; // محتوى الصفحة (الإعدادات)
+  final Widget body; // Page content (Settings)
   final String title;
 
   const VenomScaffold({super.key, required this.body, this.title = "Settings"});
@@ -237,17 +237,17 @@ class _VenomScaffoldState extends State<VenomScaffold> {
         backgroundColor: _backgroundColor,
         body: Stack(
           children: [
-            // --- الطبقة 1: محتوى التطبيق ---
-            // نستخدم TweenAnimationBuilder لتحريك قيمة الـ Blur بنعومة
+            // --- Layer 1: App Content ---
+            // We use TweenAnimationBuilder to smoothly animate Blur value
             TweenAnimationBuilder<double>(
               tween: Tween<double>(
                 begin: 0.0,
                 end: _isCinematicBlurActive
                     ? 10.0
-                    : 0.0, // قوة البلور (10 قوية وجميلة)
+                    : 0.0, // Blur strength (10 is strong and beautiful)
               ),
-              duration: const Duration(milliseconds: 300), // سرعة الأنيميشن
-              curve: Curves.easeOutCubic, // منحنى حركة ناعم
+              duration: const Duration(milliseconds: 300), // Animation speed
+              curve: Curves.easeOutCubic, // Smooth animation curve
               builder: (context, blurValue, child) {
                 return ImageFiltered(
                   imageFilter: ImageFilter.blur(
@@ -258,12 +258,12 @@ class _VenomScaffoldState extends State<VenomScaffold> {
                 );
               },
               child: Container(
-                margin: const EdgeInsets.only(top: 40), // نترك مساحة للـ Appbar
+                margin: const EdgeInsets.only(top: 40), // Leave space for Appbar
                 child: widget.body,
               ),
             ),
 
-            // --- الطبقة 2: شريط العنوان (فوق الكل) ---
+            // --- Layer 2: Title bar (above all) ---
             Positioned(
               top: 0,
               left: 0,
@@ -271,7 +271,7 @@ class _VenomScaffoldState extends State<VenomScaffold> {
               child: VenomAppbar(
                 title: widget.title,
                 textColor: _textColor,
-                // تمرير دالة للتحكم في البلور عند لمس الأزرار
+                // Pass function to control blur when touching buttons
                 onHoverEnter: () => _setBlur(true),
                 onHoverExit: () => _setBlur(false),
               ),
@@ -283,7 +283,7 @@ class _VenomScaffoldState extends State<VenomScaffold> {
   }
 }
 
-// 2. شريط العنوان المعدل (يرسل إشارات الهوفر)
+// 2. Modified title bar (sends hover signals)
 class VenomAppbar extends StatelessWidget {
   final String title;
   final VoidCallback onHoverEnter;
@@ -326,9 +326,9 @@ class VenomAppbar extends StatelessWidget {
             ),
             const Spacer(),
 
-            // مجموعة الأزرار
-            // نستخدم MouseRegion واحد كبير حول الأزرار الثلاثة
-            // لضمان استمرار البلور عند التنقل بين زر وآخر
+            // Button group
+            // We use one big MouseRegion around the three buttons
+            // To ensure blur continues when moving between buttons
             MouseRegion(
               onEnter: (_) => onHoverEnter(),
               onExit: (_) => onHoverExit(),
@@ -370,7 +370,7 @@ class VenomAppbar extends StatelessWidget {
   }
 }
 
-// 3. زر النافذة (نفس الذي صممناه سابقاً مع تحسينات طفيفة)
+// 3. Window button (same as previously designed with slight improvements)
 class VenomWindowButton extends StatefulWidget {
   final Color color;
   final IconData icon;
@@ -410,7 +410,7 @@ class _VenomWindowButtonState extends State<VenomWindowButton> {
                 ? [
                     BoxShadow(
                       color: widget.color.withValues(alpha: 0.8),
-                      blurRadius: 10, // زيادة التوهج قليلاً
+                      blurRadius: 10, // Slightly increase glow
                       spreadRadius: 2,
                     ),
                   ]

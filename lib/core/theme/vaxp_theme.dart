@@ -4,7 +4,7 @@ import '../colors/vaxp_colors.dart';
 import '../text/vaxp_text_theme.dart';
 
 class VaxpTheme {
-  /// 🎨 الثيم الرسمي (دارك + زجاجي)
+  /// 🎨 Official theme (Dark + Glass)
   static ThemeData get dark => ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
@@ -16,7 +16,7 @@ class VaxpTheme {
     scaffoldBackgroundColor: VaxpColors.darkGlassBackground,
     primaryColor: VaxpColors.primary,
     textTheme: VaxpTextTheme.darkText,
-    // ⚡️ AppBar شفاف بزجاجية
+    // ⚡️ Transparent AppBar with glass effect
     appBarTheme: AppBarTheme(
       backgroundColor: const Color.fromARGB(0, 0, 0, 0),
       surfaceTintColor: Colors.transparent,
@@ -153,7 +153,7 @@ class VaxpTheme {
   );
 }
 
-/// 🧊 أداة جاهزة لتطبيق الزجاج (Blur) على أي Widget
+/// 🧊 Ready-made tool to apply Glass (Blur) on any Widget
 class VaxpGlass extends StatelessWidget {
   final Widget child;
   final double blur;

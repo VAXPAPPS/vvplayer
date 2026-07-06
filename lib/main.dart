@@ -5,9 +5,9 @@ import 'package:media_kit/media_kit.dart';
 import 'core/theme/vaxp_theme.dart';
 import 'package:venom_config/venom_config.dart';
 import 'presentation/pages/home_page.dart';
-import 'dart:io'; // تمت الإضافة: للتحقق من وجود مسار الفيديو في نظام الملفات
+import 'dart:io'; // Added: to check for video path existence in file system
 
-Future<void> main(List<String> args) async { // تمت الإضافة: استقبال المدخلات من النظام
+Future<void> main(List<String> args) async { // Added: receive inputs from system
   // Initialize Flutter bindings first to ensure the binary messenger is ready
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -36,23 +36,23 @@ Future<void> main(List<String> args) async { // تمت الإضافة: استق�
     await windowManager.focus();
   });
 
-  // تمت الإضافة: معالجة المدخلات (استخراج مسار الفيديو إذا تم تمريره من مدير الملفات)
+  // Added: process inputs (extract video path if passed from file manager)
   String? injectedVideoPath;
   if (args.isNotEmpty) {
     injectedVideoPath = args.first;
     
-    // التحقق من أن المسار صالح وموجود بالفعل في النظام لتجنب الأخطاء
+    // Check that path is valid and exists in system to avoid errors
     if (!File(injectedVideoPath).existsSync()) {
       injectedVideoPath = null;
     }
   }
 
-  // تمرير المسار المستخرج إلى التطبيق
+  // Pass extracted path to application
   runApp(VaxpApp(initialVideoPath: injectedVideoPath));
 }
 
 class VaxpApp extends StatelessWidget {
-  final String? initialVideoPath; // تمت الإضافة: متغير لاستقبال المسار
+  final String? initialVideoPath; // Added: variable to receive path
 
   const VaxpApp({super.key, this.initialVideoPath});
 
@@ -62,7 +62,7 @@ class VaxpApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'VAXP Video Player',
       theme: VaxpTheme.dark,
-      // تمرير المسار إلى الصفحة الرئيسية (أو يمكنك وضع شرط هنا لفتح صفحة المشغل مباشرة)
+      // Pass path to home page (or put a condition here to open player page directly)
       home: HomePage(initialVideoPath: initialVideoPath), 
     );
   }

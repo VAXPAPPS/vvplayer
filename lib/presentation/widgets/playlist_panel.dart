@@ -5,7 +5,7 @@ import '../../application/video_player/video_player_bloc.dart';
 import '../../application/video_player/video_player_event.dart';
 import '../../application/video_player/video_player_state.dart';
 
-/// لوحة قائمة التشغيل الجانبية
+/// Sidebar playlist panel
 class PlaylistPanel extends StatelessWidget {
   const PlaylistPanel({super.key});
 
@@ -36,7 +36,7 @@ class PlaylistPanel extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    // العنوان
+                    // Title
                     Padding(
                       padding: const EdgeInsets.fromLTRB(16, 16, 8, 8),
                       child: Row(
@@ -48,7 +48,7 @@ class PlaylistPanel extends StatelessWidget {
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            'قائمة التشغيل',
+                            'Playlist',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -57,7 +57,7 @@ class PlaylistPanel extends StatelessWidget {
                           ),
                           const Spacer(),
                           Text(
-                            '${state.playlist.items.length} ملف',
+                            '${state.playlist.items.length} files',
                             style: TextStyle(
                               fontSize: 11,
                               color: Colors.white.withValues(alpha: 0.4),
@@ -82,7 +82,7 @@ class PlaylistPanel extends StatelessWidget {
                       height: 1,
                     ),
 
-                    // قائمة الملفات
+                    // File list
                     Expanded(
                       child: state.playlist.isEmpty
                           ? Center(
@@ -96,7 +96,7 @@ class PlaylistPanel extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
-                                    'لا توجد ملفات',
+                                    'No files',
                                     style: TextStyle(
                                       color: Colors.white.withValues(alpha: 0.3),
                                       fontSize: 13,
@@ -128,7 +128,7 @@ class PlaylistPanel extends StatelessWidget {
                             ),
                     ),
 
-                    // زر إضافة ملفات
+                    // Add files button
                     Padding(
                       padding: const EdgeInsets.all(12),
                       child: SizedBox(
@@ -138,7 +138,7 @@ class PlaylistPanel extends StatelessWidget {
                               .read<VideoPlayerBloc>()
                               .add(OpenFilesRequested()),
                           icon: const Icon(Icons.add, size: 18),
-                          label: const Text('إضافة ملفات'),
+                          label: const Text('Add files'),
                           style: TextButton.styleFrom(
                             foregroundColor: const Color(0xFF7AB5FF),
                             padding: const EdgeInsets.symmetric(vertical: 10),
@@ -212,7 +212,7 @@ class _PlaylistItemState extends State<_PlaylistItem> {
           ),
           child: Row(
             children: [
-              // أيقونة التشغيل / الرقم
+              // Play icon / Number
               SizedBox(
                 width: 24,
                 child: widget.isActive
@@ -233,7 +233,7 @@ class _PlaylistItemState extends State<_PlaylistItem> {
 
               const SizedBox(width: 8),
 
-              // اسم الملف
+              // File name
               Expanded(
                 child: Text(
                   widget.title,
@@ -251,7 +251,7 @@ class _PlaylistItemState extends State<_PlaylistItem> {
                 ),
               ),
 
-              // زر حذف
+              // Delete button
               if (_isHovered)
                 GestureDetector(
                   onTap: widget.onRemove,

@@ -8,7 +8,7 @@ import '../../domain/entities/playlist.dart';
 import 'seek_bar.dart';
 import 'volume_control.dart';
 
-/// شريط التحكم السفلي مع تأثير زجاجي
+/// Bottom control bar with glass effect
 class VideoControls extends StatefulWidget {
   final bool visible;
 
@@ -90,7 +90,7 @@ class _VideoControlsState extends State<VideoControls>
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // شريط التقدم
+                      // Progress bar
                       SeekBar(
                         position: state.position,
                         duration: state.duration,
@@ -99,10 +99,10 @@ class _VideoControlsState extends State<VideoControls>
 
                       const SizedBox(height: 8),
 
-                      // أزرار التحكم
+                      // Control buttons
                       Row(
                         children: [
-                          // الجانب الأيسر: الصوت
+                          // Left side: Volume
                           VolumeControl(
                             volume: state.volume,
                             isMuted: state.isMuted,
@@ -113,11 +113,11 @@ class _VideoControlsState extends State<VideoControls>
 
                           const Spacer(),
 
-                          // الوسط: أزرار التشغيل
+                          // Center: Playback buttons
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              // السابق
+                              // Previous
                               _ControlButton(
                                 icon: Icons.skip_previous_rounded,
                                 onTap: () =>
@@ -127,7 +127,7 @@ class _VideoControlsState extends State<VideoControls>
 
                               const SizedBox(width: 8),
 
-                              // ترجيع
+                              // Rewind
                               _ControlButton(
                                 icon: Icons.replay_10_rounded,
                                 onTap: () =>
@@ -136,7 +136,7 @@ class _VideoControlsState extends State<VideoControls>
 
                               const SizedBox(width: 12),
 
-                              // تشغيل/إيقاف
+                              // Play/Pause
                               _PlayPauseButton(
                                 isPlaying: state.isPlaying,
                                 isBuffering: state.isBuffering,
@@ -145,7 +145,7 @@ class _VideoControlsState extends State<VideoControls>
 
                               const SizedBox(width: 12),
 
-                              // تقديم
+                              // Forward
                               _ControlButton(
                                 icon: Icons.forward_10_rounded,
                                 onTap: () =>
@@ -154,7 +154,7 @@ class _VideoControlsState extends State<VideoControls>
 
                               const SizedBox(width: 8),
 
-                              // التالي
+                              // Next
                               _ControlButton(
                                 icon: Icons.skip_next_rounded,
                                 onTap: () =>
@@ -166,11 +166,11 @@ class _VideoControlsState extends State<VideoControls>
 
                           const Spacer(),
 
-                          // الجانب الأيمن: خيارات إضافية
+                          // Right side: additional options
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              // التكرار
+                              // Repeat
                               _ControlButton(
                                 icon: _loopIcon(state.playlist.loopMode),
                                 onTap: () =>
@@ -180,14 +180,14 @@ class _VideoControlsState extends State<VideoControls>
                                 size: 18,
                               ),
 
-                              // السرعة
+                              // Speed
                               _SpeedButton(
                                 speed: state.speed,
                                 onSpeedChanged: (s) =>
                                     bloc.add(SpeedChanged(s)),
                               ),
 
-                              // قائمة التشغيل
+                              // Playlist
                               _ControlButton(
                                 icon: Icons.queue_music_rounded,
                                 onTap: () =>
@@ -196,7 +196,7 @@ class _VideoControlsState extends State<VideoControls>
                                 size: 20,
                               ),
 
-                              // ملء الشاشة
+                              // Fullscreen
                               _ControlButton(
                                 icon: state.isFullscreen
                                     ? Icons.fullscreen_exit
@@ -232,7 +232,7 @@ class _VideoControlsState extends State<VideoControls>
   }
 }
 
-// ===== أزرار مساعدة =====
+// ===== Helper Buttons =====
 
 class _ControlButton extends StatefulWidget {
   final IconData icon;
@@ -381,7 +381,7 @@ class _SpeedButtonState extends State<_SpeedButton> {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<double>(
-      tooltip: 'سرعة التشغيل',
+      tooltip: 'Playback speed',
       offset: const Offset(0, -200),
       color: Colors.black.withValues(alpha: 0.85),
       shape: RoundedRectangleBorder(

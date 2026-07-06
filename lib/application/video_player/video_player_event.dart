@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:media_kit/media_kit.dart';
 
-/// أحداث مشغل الفيديو
+/// Video player events
 abstract class VideoPlayerEvent extends Equatable {
   const VideoPlayerEvent();
 
@@ -9,8 +9,8 @@ abstract class VideoPlayerEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-// ===== التشغيل الأساسي =====
-/// تشغيل ملف فيديو محدد (محقون من النظام عبر مدير الملفات)
+// ===== Basic Playback =====
+/// Play specific video file (injected by system via file manager)
 class PlayInjectedFileRequested extends VideoPlayerEvent {
   final String path;
   const PlayInjectedFileRequested(this.path);
@@ -18,10 +18,10 @@ class PlayInjectedFileRequested extends VideoPlayerEvent {
   @override
   List<Object?> get props => [path];
 }
-/// فتح ملف/ملفات فيديو عبر مربع حوار
+/// Open video file/files via dialog
 class OpenFilesRequested extends VideoPlayerEvent {}
 
-/// فتح ملفات فيديو من مسارات (Drag & Drop)
+/// Open video files from paths (Drag & Drop)
 class FilesDropped extends VideoPlayerEvent {
   final List<String> paths;
   const FilesDropped(this.paths);
@@ -30,15 +30,15 @@ class FilesDropped extends VideoPlayerEvent {
   List<Object?> get props => [paths];
 }
 
-/// تشغيل/إيقاف مؤقت
+/// Play/Pause
 class PlayPauseToggled extends VideoPlayerEvent {}
 
-/// إيقاف التشغيل
+/// Stop playback
 class StopRequested extends VideoPlayerEvent {}
 
-// ===== التنقل =====
+// ===== Navigation =====
 
-/// الانتقال لموقع معين في الفيديو
+/// Go to specific location in video
 class SeekRequested extends VideoPlayerEvent {
   final Duration position;
   const SeekRequested(this.position);
@@ -47,15 +47,15 @@ class SeekRequested extends VideoPlayerEvent {
   List<Object?> get props => [position];
 }
 
-/// تقديم 10 ثوانٍ
+/// Forward 10 seconds
 class SeekForwardRequested extends VideoPlayerEvent {}
 
-/// ترجيع 10 ثوانِ
+/// Rewind 10 seconds
 class SeekBackwardRequested extends VideoPlayerEvent {}
 
-// ===== الصوت =====
+// ===== Volume =====
 
-/// تغيير مستوى الصوت
+/// Change volume
 class VolumeChanged extends VideoPlayerEvent {
   final double volume;
   const VolumeChanged(this.volume);
@@ -64,18 +64,18 @@ class VolumeChanged extends VideoPlayerEvent {
   List<Object?> get props => [volume];
 }
 
-/// كتم/إلغاء كتم الصوت
+/// Mute/Unmute audio
 class MuteToggled extends VideoPlayerEvent {}
 
-/// رفع الصوت 5%
+/// Volume up 5%
 class VolumeUpRequested extends VideoPlayerEvent {}
 
-/// خفض الصوت 5%
+/// Volume down 5%
 class VolumeDownRequested extends VideoPlayerEvent {}
 
-// ===== السرعة =====
+// ===== Speed =====
 
-/// تغيير سرعة التشغيل
+/// Change playback speed
 class SpeedChanged extends VideoPlayerEvent {
   final double speed;
   const SpeedChanged(this.speed);
@@ -84,20 +84,20 @@ class SpeedChanged extends VideoPlayerEvent {
   List<Object?> get props => [speed];
 }
 
-// ===== الشاشة =====
+// ===== Screen =====
 
-/// تبديل ملء الشاشة
+/// Toggle fullscreen
 class FullscreenToggled extends VideoPlayerEvent {}
 
-// ===== قائمة التشغيل =====
+// ===== Playlist =====
 
-/// الانتقال للفيديو التالي
+/// Move to next video
 class NextTrackRequested extends VideoPlayerEvent {}
 
-/// الانتقال للفيديو السابق
+/// Move to previous video
 class PreviousTrackRequested extends VideoPlayerEvent {}
 
-/// الانتقال لعنصر محدد في القائمة
+/// Move to specific item in playlist
 class JumpToTrackRequested extends VideoPlayerEvent {
   final int index;
   const JumpToTrackRequested(this.index);
@@ -106,7 +106,7 @@ class JumpToTrackRequested extends VideoPlayerEvent {
   List<Object?> get props => [index];
 }
 
-/// إزالة عنصر من قائمة التشغيل
+/// Remove item from playlist
 class RemoveFromPlaylist extends VideoPlayerEvent {
   final int index;
   const RemoveFromPlaylist(this.index);
@@ -115,12 +115,12 @@ class RemoveFromPlaylist extends VideoPlayerEvent {
   List<Object?> get props => [index];
 }
 
-/// تبديل وضع التكرار
+/// Toggle repeat mode
 class LoopModeToggled extends VideoPlayerEvent {}
 
-// ===== المسارات =====
+// ===== Tracks =====
 
-/// تغيير مسار الصوت
+/// Change audio track
 class AudioTrackChanged extends VideoPlayerEvent {
   final AudioTrack track;
   const AudioTrackChanged(this.track);
@@ -129,7 +129,7 @@ class AudioTrackChanged extends VideoPlayerEvent {
   List<Object?> get props => [track];
 }
 
-/// تغيير مسار الترجمة
+/// Change subtitle track
 class SubtitleTrackChanged extends VideoPlayerEvent {
   final SubtitleTrack track;
   const SubtitleTrackChanged(this.track);
@@ -138,30 +138,30 @@ class SubtitleTrackChanged extends VideoPlayerEvent {
   List<Object?> get props => [track];
 }
 
-/// تحميل ملف ترجمة خارجي
+/// Load external subtitle file
 class ExternalSubtitleRequested extends VideoPlayerEvent {}
 
-// ===== أخرى =====
+// ===== Others =====
 
-/// التقاط لقطة شاشة
+/// Take screenshot
 class ScreenshotRequested extends VideoPlayerEvent {}
 
-/// تبديل إظهار/إخفاء قائمة التشغيل
+/// Toggle showing/hiding playlist
 class PlaylistPanelToggled extends VideoPlayerEvent {}
 
-/// تبديل إظهار/إخفاء معلومات الفيديو
+/// Toggle showing/hiding video info
 class VideoInfoToggled extends VideoPlayerEvent {}
 
-// ===== أحداث داخلية (من الـ Streams) =====
+// ===== Internal events (from Streams) =====
 
-/// تحديث حالة التشغيل
+/// Update playback state
 // ignore: unused_element
 class _PlayingStateChanged extends VideoPlayerEvent {
   final bool isPlaying;
   const _PlayingStateChanged(this.isPlaying);
 }
 
-/// تحديث الموقع
+/// Update location
 class PositionUpdated extends VideoPlayerEvent {
   final Duration position;
   const PositionUpdated(this.position);
@@ -170,7 +170,7 @@ class PositionUpdated extends VideoPlayerEvent {
   List<Object?> get props => [position];
 }
 
-/// تحديث المدة
+/// Update duration
 class DurationUpdated extends VideoPlayerEvent {
   final Duration duration;
   const DurationUpdated(this.duration);
@@ -179,7 +179,7 @@ class DurationUpdated extends VideoPlayerEvent {
   List<Object?> get props => [duration];
 }
 
-/// تحديث حالة التخزين المؤقت
+/// Update buffering state
 class BufferingStateChanged extends VideoPlayerEvent {
   final bool isBuffering;
   const BufferingStateChanged(this.isBuffering);
@@ -188,10 +188,10 @@ class BufferingStateChanged extends VideoPlayerEvent {
   List<Object?> get props => [isBuffering];
 }
 
-/// اكتمال التشغيل
+/// Playback complete
 class PlaybackCompleted extends VideoPlayerEvent {}
 
-/// تحديث المسارات المتاحة
+/// Update available tracks
 class TracksUpdated extends VideoPlayerEvent {
   final List<AudioTrack> audioTracks;
   final List<SubtitleTrack> subtitleTracks;
@@ -201,7 +201,7 @@ class TracksUpdated extends VideoPlayerEvent {
   List<Object?> get props => [audioTracks, subtitleTracks];
 }
 
-/// حدث خطأ
+/// Error event
 class ErrorOccurred extends VideoPlayerEvent {
   final String message;
   const ErrorOccurred(this.message);

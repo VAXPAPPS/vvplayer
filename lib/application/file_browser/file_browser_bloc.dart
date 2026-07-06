@@ -28,7 +28,7 @@ class FileBrowserBloc extends Bloc<FileBrowserEvent, FileBrowserState> {
     on<ToggleBrowserVisibility>(_onToggleBrowserVisibility);
     on<ThumbnailLoaded>(_onThumbnailLoaded);
 
-    // تحميل المجلد الرئيسي والمجلدات السريعة عند البداية
+    // Load main folder and quick folders on start
     _init();
   }
 
@@ -53,7 +53,7 @@ class FileBrowserBloc extends Bloc<FileBrowserEvent, FileBrowserState> {
           ? '/'
           : event.path.split('/').where((s) => s.isNotEmpty).last;
 
-      // إضافة المسار الحالي للتاريخ (إذا لم يكن فارغاً)
+      // Add current path to history (if not empty)
       final newHistory = List<String>.from(state.history);
       if (state.currentPath.isNotEmpty && state.currentPath != event.path) {
         newHistory.add(state.currentPath);
@@ -71,7 +71,7 @@ class FileBrowserBloc extends Bloc<FileBrowserEvent, FileBrowserState> {
     } catch (e) {
       emit(state.copyWith(
         isLoading: false,
-        errorMessage: 'لا يمكن الوصول لهذا المجلد',
+        errorMessage: 'Cannot access this folder',
       ));
     }
   }
@@ -87,7 +87,7 @@ class FileBrowserBloc extends Bloc<FileBrowserEvent, FileBrowserState> {
 
     emit(state.copyWith(history: newHistory));
 
-    // التنقل للمجلد السابق بدون إضافة للتاريخ
+    // Navigate to previous folder without adding to history
     final items = await _repository.listDirectory(previousPath);
     final dirName = previousPath == '/'
         ? '/'
@@ -108,7 +108,7 @@ class FileBrowserBloc extends Bloc<FileBrowserEvent, FileBrowserState> {
     Emitter<FileBrowserState> emit,
   ) async {
     final home = _repository.getHomeDirectory();
-    // مسح التاريخ والذهاب للرئيسية
+    // Clear history and go to main
     emit(state.copyWith(history: const []));
     add(NavigateToDirectory(home));
   }
@@ -117,12 +117,12 @@ class FileBrowserBloc extends Bloc<FileBrowserEvent, FileBrowserState> {
     FileSelected event,
     Emitter<FileBrowserState> emit,
   ) {
-    // إنشاء VideoItem وإرسال للـ PlayerBloc
+    // Create VideoItem and send to PlayerBloc
     // ignore: unused_local_variable
     final videoItem = VideoItem.fromPath(event.path);
     _playerBloc.add(FilesDropped([event.path]));
 
-    // إخفاء المتصفح عند تشغيل فيديو
+    // Hide browser when playing video
     emit(state.copyWith(isVisible: false));
   }
 

@@ -1,17 +1,17 @@
 import 'package:equatable/equatable.dart';
 import 'video_item.dart';
 
-/// وضع التكرار
+/// Repeat mode
 enum LoopMode {
-  /// بدون تكرار
+  /// No repeat
   none,
-  /// تكرار ملف واحد
+  /// Repeat single file
   single,
-  /// تكرار القائمة كاملة
+  /// Repeat full playlist
   all,
 }
 
-/// كيان يمثل قائمة تشغيل
+/// Entity representing a playlist
 class Playlist extends Equatable {
   final List<VideoItem> items;
   final int currentIndex;
@@ -23,38 +23,38 @@ class Playlist extends Equatable {
     this.loopMode = LoopMode.none,
   });
 
-  /// هل القائمة فارغة
+  /// Is the playlist empty
   bool get isEmpty => items.isEmpty;
 
-  /// هل يوجد عنصر حالي
+  /// Is there a current item
   bool get hasCurrentItem => currentIndex >= 0 && currentIndex < items.length;
 
-  /// العنصر الحالي
+  /// Current item
   VideoItem? get currentItem =>
       hasCurrentItem ? items[currentIndex] : null;
 
-  /// هل يمكن الانتقال للتالي
+  /// Can navigate to next
   bool get hasNext {
     if (isEmpty) return false;
     if (loopMode == LoopMode.all) return true;
     return currentIndex < items.length - 1;
   }
 
-  /// هل يمكن الانتقال للسابق
+  /// Can navigate to previous
   bool get hasPrevious {
     if (isEmpty) return false;
     if (loopMode == LoopMode.all) return true;
     return currentIndex > 0;
   }
 
-  /// مؤشر العنصر التالي
+  /// Next item index
   int get nextIndex {
     if (!hasNext) return currentIndex;
     if (currentIndex >= items.length - 1) return 0; // loop
     return currentIndex + 1;
   }
 
-  /// مؤشر العنصر السابق
+  /// Previous item index
   int get previousIndex {
     if (!hasPrevious) return currentIndex;
     if (currentIndex <= 0) return items.length - 1; // loop

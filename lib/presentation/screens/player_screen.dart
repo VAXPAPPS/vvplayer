@@ -16,7 +16,7 @@ import '../widgets/playlist_panel.dart';
 import '../widgets/video_info_overlay.dart';
 import '../widgets/file_browser_view.dart';
 
-/// شاشة المشغل الرئيسية
+/// Main player screen
 class PlayerScreen extends StatefulWidget {
   const PlayerScreen({super.key});
 
@@ -112,7 +112,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
         bloc.add(VideoInfoToggled());
         break;
       case LogicalKeyboardKey.keyB:
-        // تبديل المتصفح
+        // Toggle browser
         browserBloc.add(ToggleBrowserVisibility());
         break;
       default:
@@ -145,14 +145,14 @@ class _PlayerScreenState extends State<PlayerScreen> {
                 },
                 child: Stack(
                   children: [
-                    // خلفية شفافة (تظهر خلفية سطح المكتب)
+                    // Transparent background (shows desktop background)
                     Container(
                       color: const Color.fromARGB(0, 0, 0, 0),
                     ),
 
-                    // المحتوى الرئيسي
+                    // Main content
                     if (playerState.hasMedia && !showBrowser)
-                      // عرض الفيديو
+                      // Video display
                       MouseRegion(
                         onHover: (_) => _showControls(),
                         child: GestureDetector(
@@ -174,10 +174,10 @@ class _PlayerScreenState extends State<PlayerScreen> {
                         ),
                       )
                     else
-                      // متصفح الملفات
+                      // File browser
                       const FileBrowserView(),
 
-                    // تراكب Drag & Drop
+                    // Drag & Drop overlay
                     if (_isDragHovering)
                       Container(
                         color: Colors.black.withValues(alpha: 0.6),
@@ -193,7 +193,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                               ),
                               const SizedBox(height: 12),
                               Text(
-                                'أفلت الملفات لتشغيلها',
+                                'Drop files to play',
                                 style: TextStyle(
                                   fontSize: 16,
                                   color: Colors.white.withValues(alpha: 0.7),
@@ -204,7 +204,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                         ),
                       ),
 
-                    // عنوان الفيديو (أعلى) - فقط في وضع التشغيل
+                    // Video title (top) - only in playback mode
                     if (playerState.hasMedia &&
                         !showBrowser &&
                         _controlsVisible)
@@ -234,11 +234,11 @@ class _PlayerScreenState extends State<PlayerScreen> {
                         ),
                       ),
 
-                    // معلومات الفيديو
+                    // Video info
                     if (playerState.hasMedia && !showBrowser)
                       const VideoInfoOverlay(),
 
-                    // عناصر التحكم (أسفل)
+                    // Controls (bottom)
                     if (playerState.hasMedia && !showBrowser)
                       Positioned(
                         bottom: 0,
@@ -247,7 +247,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                         child: VideoControls(visible: _controlsVisible),
                       ),
 
-                    // مؤشر التخزين المؤقت
+                    // Buffering indicator
                     if (playerState.isBuffering &&
                         playerState.hasMedia &&
                         !showBrowser)
@@ -257,7 +257,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                         ),
                       ),
 
-                    // لوحة قائمة التشغيل (يمين)
+                    // Playlist panel (right)
                     if (playerState.hasMedia && !showBrowser)
                       const Positioned(
                         top: 40,
@@ -266,7 +266,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                         child: PlaylistPanel(),
                       ),
 
-                    // زر العودة للمتصفح (في وضع التشغيل)
+                    // Return to browser button (in playback mode)
                     if (playerState.hasMedia &&
                         !showBrowser &&
                         _controlsVisible)
@@ -290,7 +290,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
   }
 }
 
-/// زر العودة لمتصفح الملفات
+/// Return to file browser button
 class _BrowserToggleButton extends StatefulWidget {
   final VoidCallback onTap;
   const _BrowserToggleButton({required this.onTap});
@@ -329,7 +329,7 @@ class _BrowserToggleButtonState extends State<_BrowserToggleButton> {
               ),
               const SizedBox(width: 6),
               Text(
-                'الملفات',
+                'Files',
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.white.withValues(alpha: 0.7),

@@ -14,7 +14,7 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
   final MediaPlayerService _playerService;
   final VideoRepository _repository;
 
-  /// الوصول إلى خدمة المشغل (للوصول إلى VideoController)
+  /// Access to Player service (for VideoController)
   MediaPlayerService get playerService => _playerService;
 
   final List<StreamSubscription> _subscriptions = [];
@@ -25,46 +25,46 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
   })  : _playerService = playerService,
         _repository = repository,
         super(const VideoPlayerState()) {
-    // التشغيل الأساسي
+    // Basic Playback
     on<FilesDropped>(_onFilesDropped);
     on<PlayPauseToggled>(_onPlayPauseToggled);
     on<StopRequested>(_onStopRequested);
 
-    // التنقل
+    // Navigation
     on<SeekRequested>(_onSeekRequested);
     on<SeekForwardRequested>(_onSeekForwardRequested);
     on<SeekBackwardRequested>(_onSeekBackwardRequested);
 
-    // الصوت
+    // Volume
     on<VolumeChanged>(_onVolumeChanged);
     on<MuteToggled>(_onMuteToggled);
     on<VolumeUpRequested>(_onVolumeUpRequested);
     on<VolumeDownRequested>(_onVolumeDownRequested);
 
-    // السرعة
+    // Speed
     on<SpeedChanged>(_onSpeedChanged);
 
-    // الشاشة
+    // Screen
     on<FullscreenToggled>(_onFullscreenToggled);
 
-    // قائمة التشغيل
+    // Playlist
     on<NextTrackRequested>(_onNextTrackRequested);
     on<PreviousTrackRequested>(_onPreviousTrackRequested);
     on<JumpToTrackRequested>(_onJumpToTrackRequested);
     on<RemoveFromPlaylist>(_onRemoveFromPlaylist);
     on<LoopModeToggled>(_onLoopModeToggled);
 
-    // المسارات
+    // Tracks
     on<AudioTrackChanged>(_onAudioTrackChanged);
     on<SubtitleTrackChanged>(_onSubtitleTrackChanged);
     on<ExternalSubtitleRequested>(_onExternalSubtitleRequested);
 
-    // أخرى
+    // Others
     on<ScreenshotRequested>(_onScreenshotRequested);
     on<PlaylistPanelToggled>(_onPlaylistPanelToggled);
     on<VideoInfoToggled>(_onVideoInfoToggled);
 
-    // أحداث داخلية
+    // Internal events
     on<PositionUpdated>(_onPositionUpdated);
     on<DurationUpdated>(_onDurationUpdated);
     on<BufferingStateChanged>(_onBufferingStateChanged);
@@ -76,7 +76,7 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
       await playerService.open(event.path);
     });
 
-    // الاستماع للـ Streams
+    // Listening to Streams
     _initStreams();
   }
 
@@ -141,7 +141,7 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
     );
   }
 
-  // ===== معالجات الأحداث =====
+  // ===== Event handlers =====
 
   Future<void> _onFilesDropped(
     FilesDropped event,
@@ -168,7 +168,7 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
     emit(state.copyWith(status: PlayerStatus.loading, clearError: true));
 
     try {
-      // إضافة للقائمة الحالية أو إنشاء قائمة جديدة
+      // Add to current playlist or create new one
       final currentItems = List<VideoItem>.from(state.playlist.items);
       final startIndex = currentItems.isEmpty ? 0 : currentItems.length;
       currentItems.addAll(items);
@@ -180,7 +180,7 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
 
       emit(state.copyWith(playlist: newPlaylist));
 
-      // تحميل قائمة التشغيل في المشغل
+      // Load playlist in player
       final paths = currentItems.map((item) => item.path).toList();
       await _playerService.openPlaylist(
         paths,
@@ -189,7 +189,7 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
     } catch (e) {
       emit(state.copyWith(
         status: PlayerStatus.error,
-        errorMessage: 'فشل تحميل الفيديو: $e',
+        errorMessage: 'Failed to load video: $e',
       ));
     }
   }
@@ -250,13 +250,13 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
     Emitter<VideoPlayerState> emit,
   ) async {
     if (state.isMuted) {
-      // إلغاء الكتم - استعادة الصوت السابق
+      // Unmute - restore previous volume
       final restoreVolume =
           state.volumeBeforeMute > 0 ? state.volumeBeforeMute : 50.0;
       await _playerService.setVolume(restoreVolume);
       emit(state.copyWith(volume: restoreVolume, isMuted: false));
     } else {
-      // كتم الصوت
+      // Mute
       emit(state.copyWith(
         volumeBeforeMute: state.volume,
         isMuted: true,
@@ -416,7 +416,7 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
     ExternalSubtitleRequested event,
     Emitter<VideoPlayerState> emit,
   ) async {
-    // يمكن تحميل الترجمة عبر سحب ملف الترجمة للنافذة
+    // Subtitles can be loaded by dragging subtitle file to the window
   }
 
   Future<void> _onScreenshotRequested(
@@ -448,7 +448,7 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
     ));
   }
 
-  // ===== معالجات الأحداث الداخلية =====
+  // ===== Internal event handlers =====
 
   void _onPositionUpdated(
     PositionUpdated event,
@@ -477,11 +477,11 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
   ) async {
     final loopMode = state.playlist.loopMode;
     if (loopMode == app.LoopMode.single) {
-      // إعادة تشغيل الملف الحالي
+      // Restart current file
       await _playerService.seek(Duration.zero);
       await _playerService.play();
     } else if (loopMode == app.LoopMode.all && state.playlist.hasNext) {
-      // الانتقال للتالي
+      // Move to next
       add(NextTrackRequested());
     } else if (state.playlist.hasNext) {
       add(NextTrackRequested());

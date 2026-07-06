@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// عنصر التحكم بمستوى الصوت
+/// Volume control component
 class VolumeControl extends StatefulWidget {
   final double volume;
   final bool isMuted;
@@ -42,14 +42,14 @@ class _VolumeControlState extends State<VolumeControl> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // زر كتم الصوت
+          // Mute button
           _ControlIcon(
             icon: _getVolumeIcon(),
             onTap: widget.onMuteToggled,
             size: 20,
           ),
 
-          // شريط الصوت (يظهر عند hover)
+          // Volume bar (shows on hover)
           AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             curve: Curves.easeOutCubic,
@@ -88,7 +88,7 @@ class _VolumeControlState extends State<VolumeControl> {
   }
 }
 
-/// أيقونة تحكم قابلة للضغط
+/// Clickable control icon
 class _ControlIcon extends StatefulWidget {
   final IconData icon;
   final VoidCallback onTap;

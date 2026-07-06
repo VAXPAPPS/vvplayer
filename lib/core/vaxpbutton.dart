@@ -22,7 +22,7 @@ class VaxpButton extends StatelessWidget {
   }
 }
 
-// زر ماك مع تأثير hover (لزر التكبير/إلغاء التكبير)
+// Mac button with hover effect (for maximize/unmaximize)
 class HoverVaxpButton extends StatefulWidget {
   final Color color;
   final VoidCallback onPressed;

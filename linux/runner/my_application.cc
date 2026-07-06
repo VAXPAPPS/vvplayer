@@ -55,18 +55,18 @@ static void my_application_activate(GApplication* application) {
   if (use_header_bar) {
     GtkHeaderBar* header_bar = GTK_HEADER_BAR(gtk_header_bar_new());
 
-    // --- (بداية الكود المضاف لتغيير اللون) ---
+    // --- (Start of code added to change color) ---
     GtkCssProvider* provider = gtk_css_provider_new();
     
-    // اللون الذي طلبته: A=162 (162/255 = 0.635), R=0, G=0, B=0
-    // نستخدم "headerbar" كـ "selector" لاستهداف الـ GtkHeaderBar
+    // Requested color: A=162 (162/255 = 0.635), R=0, G=0, B=0
+    // We use "headerbar" as "selector" to target GtkHeaderBar
     const gchar* css = "headerbar { background-color: rgba(0, 0, 0, 0.635); }";
     
     gtk_css_provider_load_from_data(provider, css, -1, NULL);
     GtkStyleContext* context = gtk_widget_get_style_context(GTK_WIDGET(header_bar));
     gtk_style_context_add_provider(context, GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
     g_object_unref(provider);
-    // --- (نهاية الكود المضاف) ---
+    // --- (End of added code) ---
 
     gtk_widget_show(GTK_WIDGET(header_bar));
     gtk_header_bar_set_title(header_bar, "VaxpTemplate");

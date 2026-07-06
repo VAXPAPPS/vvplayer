@@ -1,16 +1,16 @@
 import '../entities/file_item.dart';
 
-/// واجهة تجريدية لعمليات ملفات الفيديو وتصفح الملفات
+/// Abstract interface for video file operations and file browsing
 abstract class VideoRepository {
-  /// تصفح محتويات مجلد (مجلدات + ملفات فيديو فقط)
+  /// Browse folder contents (folders + video files only)
   Future<List<FileItem>> listDirectory(String path);
 
-  /// الحصول على مسار المجلد الرئيسي
+  /// Get main folder path
   String getHomeDirectory();
 
-  /// الحصول على المجلدات السريعة (Videos, Downloads, Home)
+  /// Get quick folders (Videos, Downloads, Home)
   List<FileItem> getQuickNavDirectories();
 
-  /// الحصول على الصيغ المدعومة
+  /// Get supported formats
   List<String> get supportedExtensions;
 }

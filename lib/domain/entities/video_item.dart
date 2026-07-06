@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-/// كيان يمثل ملف فيديو واحد
+/// Entity representing a single video file
 class VideoItem extends Equatable {
   final String path;
   final String title;
@@ -12,11 +12,11 @@ class VideoItem extends Equatable {
     this.duration,
   });
 
-  /// إنشاء كيان من مسار ملف
+  /// Create entity from file path
   factory VideoItem.fromPath(String filePath) {
     final segments = filePath.split('/');
     final fileName = segments.last;
-    // إزالة الامتداد من اسم الملف
+    // Remove extension from file name
     final title = fileName.contains('.')
         ? fileName.substring(0, fileName.lastIndexOf('.'))
         : fileName;

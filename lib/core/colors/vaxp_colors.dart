@@ -5,15 +5,15 @@ class VaxpColors {
   static const Color primary = Color.fromARGB(141, 32, 32, 32);
   static const Color secondary = Color.fromARGB(111, 122, 177, 255);
 
-  /// 🔲 خلفية النظام (الخلفية العامة)
-  /// يتم التحكم بها الآن عبر VenomConfig (system.background_color)
+  /// 🔲 System background (General background)
+  /// Controlled now via VenomConfig (system.background_color)
   static const Color darkGlassBackground = Color.fromARGB(188, 0, 0, 0);
 
-  /// 🧊 لون الزجاج (سطح نصف شفاف)
+  /// 🧊 Glass color (semi-transparent surface)
   static const Color glassSurface = Color.fromARGB(188, 0, 0, 0);
 
-  /// 📝 لون النصوص الافتراضي
-  /// يتم التحكم به الآن عبر VenomConfig (system.text_color)
+  /// 📝 Default text color
+  /// Controlled now via VenomConfig (system.text_color)
   static Color defaultText = Colors.white;
   static final ValueNotifier<Color> textNotifier = ValueNotifier<Color>(
     Colors.white,

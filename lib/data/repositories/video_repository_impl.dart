@@ -2,7 +2,7 @@ import 'dart:io';
 import '../../domain/entities/file_item.dart';
 import '../../domain/repositories/video_repository.dart';
 
-/// تنفيذ مستودع الفيديو باستخدام dart:io لتصفح الملفات
+/// Implement video repository using dart:io for file browsing
 class VideoRepositoryImpl implements VideoRepository {
   @override
   List<String> get supportedExtensions => [
@@ -21,14 +21,14 @@ class VideoRepositoryImpl implements VideoRepository {
     final home = getHomeDirectory();
     final quickPaths = <FileItem>[];
 
-    // المجلد الرئيسي
+    // Main folder
     quickPaths.add(FileItem(
       name: 'main',
       path: home,
       isDirectory: true,
     ));
 
-    // مجلدات شائعة
+    // Common folders
     final commonDirs = {
       'Videos': '$home/Videos',
       'Downloads': '$home/Downloads',
@@ -48,7 +48,7 @@ class VideoRepositoryImpl implements VideoRepository {
       }
     }
 
-    // الجذر
+    // Root
     quickPaths.add(const FileItem(
       name: 'System /',
       path: '/',
@@ -71,7 +71,7 @@ class VideoRepositoryImpl implements VideoRepository {
           final stat = await entity.stat();
           final name = entity.path.split('/').last;
 
-          // تخطي الملفات المخفية
+          // Skip hidden files
           if (name.startsWith('.')) continue;
 
           if (entity is Directory) {
@@ -82,7 +82,7 @@ class VideoRepositoryImpl implements VideoRepository {
               modifiedDate: stat.modified,
             ));
           } else if (entity is File) {
-            // فقط ملفات الفيديو
+            // Only video files
             final ext = name.split('.').last.toLowerCase();
             if (supportedExtensions.contains(ext)) {
               items.add(FileItem(
@@ -95,11 +95,11 @@ class VideoRepositoryImpl implements VideoRepository {
             }
           }
         } catch (_) {
-          // تخطي الملفات التي لا يمكن الوصول إليها
+          // Skip inaccessible files
         }
       }
     } catch (_) {
-      // permission denied أو أخطاء أخرى
+      // permission denied or other errors
     }
 
     items.sort();

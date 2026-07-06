@@ -4,67 +4,67 @@ import 'package:media_kit/media_kit.dart' hide Playlist;
 import '../../domain/entities/video_item.dart';
 import '../../domain/entities/playlist.dart';
 
-/// حالة المشغل
+/// Player state
 enum PlayerStatus {
-  /// لم يتم تحميل أي فيديو
+  /// No video loaded
   idle,
-  /// جاري التحميل
+  /// Loading
   loading,
-  /// قيد التشغيل
+  /// Playing
   playing,
-  /// مُوقف مؤقتاً
+  /// Paused
   paused,
-  /// مُوقف
+  /// Stopped
   stopped,
-  /// خطأ
+  /// Error
   error,
 }
 
-/// حالة مشغل الفيديو الكاملة
+/// Full video player state
 class VideoPlayerState extends Equatable {
-  /// حالة المشغل
+  /// Player state
   final PlayerStatus status;
 
-  /// الموقع الحالي
+  /// Current location
   final Duration position;
 
-  /// مدة الفيديو الكلية
+  /// Total video duration
   final Duration duration;
 
-  /// مستوى الصوت (0.0 - 100.0)
+  /// Volume level (0.0 - 100.0)
   final double volume;
 
-  /// مستوى الصوت قبل الكتم (لاستعادته)
+  /// Volume level before mute (to restore)
   final double volumeBeforeMute;
 
-  /// هل الصوت مكتوم
+  /// Is audio muted
   final bool isMuted;
 
-  /// سرعة التشغيل
+  /// Playback speed
   final double speed;
 
-  /// هل في وضع ملء الشاشة
+  /// Is it in fullscreen mode
   final bool isFullscreen;
 
-  /// هل جاري التخزين المؤقت
+  /// Is buffering
   final bool isBuffering;
 
-  /// قائمة التشغيل
+  /// Playlist
   final Playlist playlist;
 
-  /// مسارات الصوت المتاحة
+  /// Available audio tracks
   final List<AudioTrack> audioTracks;
 
-  /// مسارات الترجمة المتاحة
+  /// Available subtitle tracks
   final List<SubtitleTrack> subtitleTracks;
 
-  /// هل لوحة قائمة التشغيل مرئية
+  /// Is playlist panel visible
   final bool isPlaylistPanelVisible;
 
-  /// هل معلومات الفيديو مرئية
+  /// Is video info visible
   final bool isVideoInfoVisible;
 
-  /// رسالة الخطأ
+  /// Error message
   final String? errorMessage;
 
   const VideoPlayerState({
@@ -85,22 +85,22 @@ class VideoPlayerState extends Equatable {
     this.errorMessage,
   });
 
-  /// هل يوجد فيديو محمّل
+  /// Is there a video loaded
   bool get hasMedia => status != PlayerStatus.idle;
 
-  /// هل الفيديو قيد التشغيل
+  /// Is video playing
   bool get isPlaying => status == PlayerStatus.playing;
 
-  /// النسبة المئوية للتقدم (0.0 - 1.0)
+  /// Progress percentage (0.0 - 1.0)
   double get progress {
     if (duration.inMilliseconds == 0) return 0.0;
     return (position.inMilliseconds / duration.inMilliseconds).clamp(0.0, 1.0);
   }
 
-  /// الوقت المتبقي
+  /// Time remaining
   Duration get remaining => duration - position;
 
-  /// العنوان الحالي
+  /// Current title
   String get currentTitle {
     return playlist.currentItem?.title ?? 'VAXP Player';
   }

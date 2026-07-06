@@ -43,11 +43,11 @@ class ThumbnailLib {
       .asFunction<FreeStringFfiDart>();
 }
 
-/// خدمة توليد وتخزين الـ Thumbnails باستخدام FFI والمكتبة المشتركة لمدير الملفات
+/// Service for generating and caching Thumbnails using FFI and file manager shared lib
 class ThumbnailService {
   static const int thumbnailSize = 256; // Matching AetherFiles large thumbnail size
 
-  /// تهيئة مجلد الكاش (بما يطابق AetherFiles و Freedesktop Spec)
+  /// Initialize cache folder (matching AetherFiles and Freedesktop Spec)
   Future<String> get cachePath async {
     final home = Platform.environment['HOME'] ?? '';
     final xdgCache = Platform.environment['XDG_CACHE_HOME'];
@@ -57,7 +57,7 @@ class ThumbnailService {
     return p.join(baseCache, 'thumbnails', 'large');
   }
 
-  /// الحصول على نوع الـ MIME بناءً على الامتداد
+  /// Get MIME type based on extension
   String _getMimeType(String filePath) {
     final ext = p.extension(filePath).toLowerCase();
     if (ext == '.mp4' || ext == '.mkv' || ext == '.avi' || ext == '.mov' || ext == '.webm') {
@@ -70,7 +70,7 @@ class ThumbnailService {
     return 'image/jpeg'; // Default fallback
   }
 
-  /// الحصول على مسار الكاش للصورة المصغرة محلياً بدون تجميد
+  /// Get local thumbnail cache path without freezing
   String _getCachedPath(String uri) {
     final uriPtr = uri.toNativeUtf8();
     final pathPtr = ThumbnailLib.getThumbnailPath(uriPtr);
@@ -80,7 +80,7 @@ class ThumbnailService {
     return path;
   }
 
-  /// تشغيل استدعاء FFI لتوليد وحفظ الثمنيل في خيط معالجة منفصل (Isolate)
+  /// Run FFI call to generate and cache Thumbnail in background Isolate
   static Future<String?> _generateThumbnailNative(String uri, String mimeType) async {
     return await Isolate.run(() {
       final uriPtr = uri.toNativeUtf8();
@@ -100,19 +100,19 @@ class ThumbnailService {
     });
   }
 
-  /// توليد أو استرجاع Thumbnail
+  /// Generate or retrieve Thumbnail
   Future<Uint8List?> getThumbnail(String imagePath) async {
     try {
       final uri = Uri.file(imagePath).toString();
 
-      // التحقق من وجود الصورة مسبقاً في الكاش على الخيط الرئيسي 
+      // Check if image exists in cache on main thread 
       final thumbPath = _getCachedPath(uri);
       final file = File(thumbPath);
       if (file.existsSync()) {
         return await file.readAsBytes();
       }
 
-      // إذا لم تكن موجودة، نقوم بتوليدها في Isolate خلفي
+      // If not present, we generate it in background Isolate
       final mimeType = _getMimeType(imagePath);
       final generatedPath = await _generateThumbnailNative(uri, mimeType);
       if (generatedPath != null) {
@@ -122,7 +122,7 @@ class ThumbnailService {
         }
       }
     } catch (e) {
-      // تجاهل الأخطاء والإرجاع بقيمة فارغة
+      // Ignore errors and return empty
     }
     return null;
   }

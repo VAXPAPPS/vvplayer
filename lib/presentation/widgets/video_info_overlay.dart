@@ -5,7 +5,7 @@ import '../../application/video_player/video_player_bloc.dart';
 import '../../application/video_player/video_player_event.dart';
 import '../../application/video_player/video_player_state.dart';
 
-/// تراكب معلومات الفيديو
+/// Video info overlay
 class VideoInfoOverlay extends StatelessWidget {
   const VideoInfoOverlay({super.key});
 
@@ -51,7 +51,7 @@ class VideoInfoOverlay extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // العنوان
+                    // Title
                     Row(
                       children: [
                         Icon(
@@ -92,39 +92,39 @@ class VideoInfoOverlay extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
 
-                    // معلومات
+                    // Information
                     _InfoRow(
-                      label: 'المدة',
+                      label: 'Duration',
                       value: _formatDuration(state.duration),
                     ),
                     const SizedBox(height: 6),
                     _InfoRow(
-                      label: 'الموقع',
+                      label: 'Location',
                       value: _formatDuration(state.position),
                     ),
                     const SizedBox(height: 6),
                     _InfoRow(
-                      label: 'السرعة',
+                      label: 'Speed',
                       value: '${state.speed}x',
                     ),
                     const SizedBox(height: 6),
                     _InfoRow(
-                      label: 'الصوت',
+                      label: 'Volume',
                       value: state.isMuted
-                          ? 'مكتوم'
+                          ? 'Muted'
                           : '${state.volume.round()}%',
                     ),
                     if (state.playlist.items.length > 1) ...[
                       const SizedBox(height: 6),
                       _InfoRow(
-                        label: 'القائمة',
+                        label: 'Menu',
                         value:
                             '${state.playlist.currentIndex + 1}/${state.playlist.items.length}',
                       ),
                     ],
                     const SizedBox(height: 6),
                     _InfoRow(
-                      label: 'المسار',
+                      label: 'Path',
                       value: currentItem.path.split('/').last,
                       isSmall: true,
                     ),
